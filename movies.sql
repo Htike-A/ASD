@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS shows (
 CREATE TABLE IF NOT EXISTS seats (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     show_id INTEGER,
-    seat_code TEXT,      -- e.g., "LA5"
+    seat_code TEXT,      -- "Br_screen_5"
     section TEXT,        -- "Lower Hall" or "Upper Gallery"
     is_booked BOOLEAN DEFAULT 0,
     FOREIGN KEY (show_id) REFERENCES shows(id),
