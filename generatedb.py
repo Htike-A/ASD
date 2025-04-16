@@ -68,7 +68,7 @@ for screen_id in screen_ids:
         for seat in upper_seats:
             cur.execute("INSERT INTO seats (show_id, seat_code, section, is_booked) VALUES (?, ?, ?, ?)", (show_id, seat, "Upper Gallery", 0))
 
-# --- Finalize ---
+
 conn.commit()
 conn.close()
 
