@@ -42,13 +42,14 @@ for city in cities:
 # --- Insert Shows ---
 cur.execute("SELECT id, capacity FROM screens")
 screen_ids = [row[0:2] for row in cur.fetchall()]
-
+print(screen_ids)
 cur.execute("SELECT id FROM films")
 film_ids = [row[0] for row in cur.fetchall()]
 
 
 show_id_counter = 1
 for screen_id in screen_ids:
+    print(screen_id)
     num_shows = random.randint(1, 3)
     selected_times = random.sample(show_times, num_shows)
     for time in selected_times:

@@ -25,10 +25,11 @@ class ManinMenuController:
 	
 	def open_seat_view(self, movie, show_id):
 		seats = self.get_seats(show_id)
-		SeatView(self.master, seats, show_id, movie)
+		SeatView(self.master, self, seats, show_id, movie)
 
+	def check_seat(self, seat_id, show_id):
+		return self.model.check_seat(seat_id, show_id)
 	
-
 
 	def go_back():
 		pass

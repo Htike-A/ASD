@@ -1,16 +1,6 @@
 from models.database import get_connection
 
 class MovieModel:
-	
-	def get_movies(self):
-		self.conn = get_connection()
-		self.cur = self.conn.cursor()
-		self.cur.execute("SELECT * FROM films")
-		result = self.cur.fetchall()
-		print(result)
-		self.close_conn()
-		return result
-
 			
 	def get_location(self):
 		self.conn = get_connection()
@@ -71,3 +61,18 @@ class MovieModel:
 		seats = cur.fetchall()
 		conn.close()
 		return seats
+
+	def check_seat(self, seat_id, show_id):
+		conn = get_connection()
+		cur = conn.cursor()
+		query = """
+		SELECT 1 
+		FROM bookings
+		WHERE show_id = ? AND seat_id = ?
+		LIMIT 1
+		"""
+		cur.execute(query, (show_id, seat_id)) 
+		result = cur.fetchone() is not None  # This returns True if a seat is booked, False otherwise
+		cur.close()
+		conn.close()
+		return result
