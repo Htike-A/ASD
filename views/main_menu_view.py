@@ -94,7 +94,7 @@ class MainMenuView(tk.Frame):
 			tk.Label(frame, text=movie[4], font=("Arial", 12)).pack(anchor="w")          
 			tk.Label(frame, text=movie[1], font=("Arial", 12)).pack(anchor="w")        
 			tk.Label(frame, text="Screen: " + movie[-3], font=("Arial", 12)).pack(anchor="w")
-			tk.Label(frame, text="Showtime: " + movie[6], font=("Arial", 12)).pack(anchor="w")
+			tk.Label(frame, text="Showtime: " + movie[7], font=("Arial", 12)).pack(anchor="w")
 
 			book_button = tk.Button(
 				frame,
@@ -111,4 +111,8 @@ class MainMenuView(tk.Frame):
 
 	def proceed_to_booking(self, movie):
 		print("Proceeding to book:", movie[0], "at", movie[6], "on", movie[7])
+		show_id = movie[6]
+		self.controller.open_seat_view(movie, show_id)
+
+
 

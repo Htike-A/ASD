@@ -37,10 +37,18 @@ CREATE TABLE IF NOT EXISTS shows (
 
 CREATE TABLE IF NOT EXISTS seats (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    show_id INTEGER,
-    seat_code TEXT,      -- "Br_screen_5"
+    screen_id INTEGER,
+    seat_code TEXT,
     section TEXT,        -- "Lower Hall" or "Upper Gallery"
-    is_booked BOOLEAN DEFAULT 0,
+    FOREIGN KEY (screen_id) REFERENCES screens(id),
+    UNIQUE(screen_id, seat_code)
+);
+
+CREATE TABLE IF NOT EXISTS bookings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    show_id INTEGER,
+    seat_id INTEGER,
     FOREIGN KEY (show_id) REFERENCES shows(id),
-    UNIQUE(show_id, seat_code)
+    FOREIGN KEY (seat_id) REFERENCES seats(id),
+    UNIQUE(show_id, seat_id)  -- Prevents double booking the same seat for a show
 );

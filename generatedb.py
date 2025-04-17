@@ -1,5 +1,6 @@
 import sqlite3
 import random
+import math
 
 # Connect to the database
 conn = sqlite3.connect("movies.db")
@@ -39,11 +40,12 @@ for city in cities:
         cur.execute("INSERT INTO screens (cinema_id, screen_name, capacity) VALUES (?, ?, ?)", (cinema_id, screen_name, capacity))
 
 # --- Insert Shows ---
-cur.execute("SELECT id FROM screens")
-screen_ids = [row[0] for row in cur.fetchall()]
+cur.execute("SELECT id, capacity FROM screens")
+screen_ids = [row[0:2] for row in cur.fetchall()]
 
 cur.execute("SELECT id FROM films")
 film_ids = [row[0] for row in cur.fetchall()]
+
 
 show_id_counter = 1
 for screen_id in screen_ids:
@@ -56,17 +58,30 @@ for screen_id in screen_ids:
         cur.execute("""
             INSERT INTO shows (screen_id, film_id, show_time, show_date, price)
             VALUES (?, ?, ?, ?, ?)
-        """, (screen_id, film_id, time, day, price))
+        """, (screen_id[0], film_id, time, day, price))
         show_id = cur.lastrowid
+        capacity = screen_id[1]
+
+        vip_cap = 10
+
+        lower_hall_cap = math.ceil((capacity - vip_cap) / 2)
+        upper_hall_cap = capacity - vip_cap - lower_hall_cap
 
         # --- Insert Seats ---
-        lower_seats = [f"LA{n}" for n in range(1, random.randint(20, 40))]
-        upper_seats = [f"UB{n}" for n in range(1, random.randint(20, 40))]
+        lower_seats = [f"LA{n}" for n in range(1, lower_hall_cap + 1)]
+        upper_seats = [f"UB{n}" for n in range(1, upper_hall_cap + 1)]
+        vip_seats = [f"VIP{n}" for n in range(1, vip_cap + 1)]
 
-        for seat in lower_seats:
-            cur.execute("INSERT INTO seats (show_id, seat_code, section, is_booked) VALUES (?, ?, ?, ?)", (show_id, seat, "Lower Hall", 0))
-        for seat in upper_seats:
-            cur.execute("INSERT INTO seats (show_id, seat_code, section, is_booked) VALUES (?, ?, ?, ?)", (show_id, seat, "Upper Gallery", 0))
+        s_id = screen_id[0]
+
+        all_seats = [(s_id, seat, "Lower Hall") for seat in lower_seats] + \
+            [(s_id, seat, "Upper Gallery") for seat in upper_seats] + \
+            [(s_id, seat, "VIP") for seat in vip_seats]
+        
+        cur.executemany("""
+    INSERT OR IGNORE INTO seats (screen_id, seat_code, section)
+    VALUES (?, ?, ?)
+""", all_seats)
 
 
 conn.commit()
