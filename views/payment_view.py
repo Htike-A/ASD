@@ -8,7 +8,7 @@ class PaymentView(tk.Toplevel):
         self.data = data
         self.selected_seats = self.data["Selected_Seats"]
 
-        self.total_price = len(self.selected_seats) * price_per_seat
+        self.total_price = self.data["Payment"]
 
         self.title("Payment")
         self.geometry("400x500")
@@ -49,7 +49,7 @@ class PaymentView(tk.Toplevel):
             messagebox.showerror("Missing Info", "Please fill in all payment details.", parent=self)
             return
 
-        # TODO: Add booking logic here (e.g., update DB)
+        self.controller.save_payment()
         messagebox.showinfo("Success", f"Payment of £{self.total_price:.2f} successful!", parent=self)
 
-        self.destroy()  # Close the payment window
+        self.destroy()

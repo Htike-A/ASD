@@ -72,7 +72,6 @@ class SeatView(tk.Toplevel):
 	def draw_payment_button(self):
 		btn_frame = tk.Frame(self)
 		btn_frame.pack(padx=20, pady=20)
-		print(self.selected_seats)
 		btn = tk.Button(btn_frame, text="Proceed to Payment", fg="blue", command=lambda: self.proceed_to_payment(self.movie, self.selected_seats))
 		btn.pack()
 

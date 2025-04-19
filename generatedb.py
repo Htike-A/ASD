@@ -43,6 +43,14 @@ INSERT INTO films (film_name, film_disc, film_age, film_rating, film_cast, durat
 VALUES (?, ?, ?, ?, ?, ?)
 """, films)
 
+PW = hash_pw("123")
+
+cur.execute("""
+INSERT INTO users 
+  (user_FirstName,user_LastName, user_email, user_password, user_role) 
+VALUES (?, ?, ?, ?, ?)
+""", ('asdf', 'asdf', 'asdf', PW, 'Manager'))
+
 # --- Insert Cinemas & Screens ---
 cinema_ids = []
 
@@ -82,8 +90,8 @@ for screen_id in screen_ids:
 
         vip_cap = 10
 
-        lower_hall_cap = math.ceil((capacity - vip_cap) / 2)
-        upper_hall_cap = capacity - vip_cap - lower_hall_cap
+        lower_hall_cap = math.floor(capacity * 0.3)
+        upper_hall_cap = capacity - lower_hall_cap - vip_cap
 
         # --- Insert Seats ---
         lower_seats = [f"LH{n}" for n in range(1, lower_hall_cap + 1)]

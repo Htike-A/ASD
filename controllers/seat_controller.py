@@ -23,5 +23,23 @@ class SeatController():
 		return self.model.check_seat(seat_id, seat_code, show_id)
 
 	def open_payment_view(self, movie, selected_seats):
-		self.app.update_data(Movie = movie, Selected_Seats = selected_seats)
+		price = movie[-5]
+		total_price = 0
+		for seat_code in selected_seats:
+			if seat_code.startswith("LH"):
+				price = price
+
+			elif seat_code.startswith("UG"):
+				price = price * 1.2
+
+			elif seat_code.startswith("VIP"):
+				price = price * 1.2 * 1.2
+			else:
+				print("Error")
+			total_price += price
+
+
+		self.app.update_data(Movie = movie, Selected_Seats = selected_seats, Payment = total_price)
+
+
 		self.app.show_frame("PaymentController", self.app.data)
