@@ -1,2 +1,1 @@
-
-	app = AppManager(root)
+alice.staff@example.com

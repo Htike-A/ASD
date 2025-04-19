@@ -1,17 +1,18 @@
 import tkinter as tk
-
+from tkinter import messagebox
 
 class SeatView(tk.Toplevel):
-	def __init__(self, master, controller, seats_data, show_id, movies):
+	def __init__(self, master, controller, seats_data, show_id, movie):
 		super().__init__(master)
 		self.title("Select Your Seat")
 		self.controller = controller
 		self.seats_data = seats_data
 		self.show_id = show_id
 		self.selected_seats = []
-		self.movies = movies
+		self.movie = movie
 		self.draw_seats()
-		print(seats_data)
+		self.draw_payment_button()
+
 	def draw_seats(self):
 		seat_frame = tk.Frame(self)
 		seat_frame.pack(padx=20, pady=20)
@@ -22,11 +23,7 @@ class SeatView(tk.Toplevel):
 		self.seat_buttons = {}
 
 		for seat_id, screen_id, seat_code, section in self.seats_data:
-			# Check if the seat is booked using the controller method
-
-			is_booked = self.controller.check_seat(seat_id, self.show_id)
-			print(seat_id, seat_code,is_booked)
-
+			is_booked = self.controller.check_seat(seat_id, seat_code, self.show_id)
 			color = "green" if not is_booked else "red"
 			state = "normal" if not is_booked else "disabled"
 
@@ -70,3 +67,18 @@ class SeatView(tk.Toplevel):
 
 	def get_selected_seats(self):
 		return self.selected_seats
+	
+	def draw_payment_button(self):
+		btn_frame = tk.Frame(self)
+		btn_frame.pack(padx=20, pady=20)
+		btn = tk.Button(btn_frame, text="Proceed to Payment", fg="blue", command=lambda m=self.movie, s = self.selected_seats : self.proceed_to_payment(m, s))
+		btn.pack()
+
+	def proceed_to_payment(self, movie, selected_seats):
+		if selected_seats:
+			self.controller.open_payment_view(movie, selected_seats)
+		else:
+			messagebox.showerror("Error", "Please select seats!")
+
+
+		

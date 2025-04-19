@@ -62,16 +62,28 @@ class MovieModel:
 		conn.close()
 		return seats
 
-	def check_seat(self, seat_id, show_id):
+	def check_seat(self, seat_id, seat_code, show_id):
 		conn = get_connection()
 		cur = conn.cursor()
 		query = """
-		SELECT 1 
-		FROM bookings
-		WHERE show_id = ? AND seat_id = ?
-		LIMIT 1
+		SELECT 
+			bs.seat_id,
+			s.seat_code,
+			b.booking_ref,
+			b.booking_status
+		FROM 
+			booking_seat bs
+		JOIN 
+			bookings b ON bs.booking_id = b.id
+		JOIN 
+			seats s ON bs.seat_id = s.id
+		WHERE 
+			b.show_id = ?             -- the show ID you want to check
+			AND s.seat_code = ?       -- e.g., 'A10'
+			AND s.screen_id = ?       -- to ensure it's from the right screen
+			AND b.booking_status = 'confirmed';
 		"""
-		cur.execute(query, (show_id, seat_id)) 
+		cur.execute(query, (show_id, seat_code, seat_id)) 
 		result = cur.fetchone() is not None  # This returns True if a seat is booked, False otherwise
 		cur.close()
 		conn.close()

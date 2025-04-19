@@ -1,15 +1,16 @@
 from views.main_menu_view import MainMenuView
 from models.movie_model import MovieModel
 from views.seat_view import SeatView
+from views.payment_view import PaymentView
 
-class ManinMenuController:
-	def __init__(self, master, app):
+class MainMenuController:
+	def __init__(self, master, app, data):
 		self.master = master
 		self.app = app
 		self.model = MovieModel()
 		self.view = MainMenuView(master, self)
 
-	def show(self):
+	def show(self, data):
 		self.view.pack()
 
 	def hide(self):
@@ -27,9 +28,11 @@ class ManinMenuController:
 		seats = self.get_seats(show_id)
 		SeatView(self.master, self, seats, show_id, movie)
 
-	def check_seat(self, seat_id, show_id):
-		return self.model.check_seat(seat_id, show_id)
+	def check_seat(self, seat_id, seat_code, show_id):
+		return self.model.check_seat(seat_id, seat_code, show_id)
 	
+	def open_payment_view(self, movie, seats):
+		PaymentView(self.master, self, movie, seats)
 
 	def go_back():
 		pass

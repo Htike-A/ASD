@@ -1,10 +1,28 @@
 import sqlite3
 import random
 import math
+import hashlib
+
+def hash_pw(pw: str) -> str:
+    return hashlib.sha256(pw.encode()).hexdigest()
+
 
 # Connect to the database
 conn = sqlite3.connect("movies.db")
 cur = conn.cursor()
+
+users = [
+    ("Alice" ,"Staff",  "alice.staff@example.com",  hash_pw("password123"), "Booking Staff"),
+    ("Bob" , "Admin",    "bob.admin@example.com",    hash_pw("adminpass"),   "Admin"),
+    ("Hein", "Zarni Naing","heinzarninn@gmail.com",    hash_pw("managerpass"),"Manager")
+]
+
+cur.executemany("""
+INSERT OR IGNORE INTO users 
+  (user_FirstName,user_LastName, user_email, user_password, user_role) 
+VALUES (?, ?, ?, ?, ?)
+""", users)
+
 
 # --- Data ---
 cities = ["Bristol", "Birmingham", "Cardiff", "London"]
@@ -42,14 +60,13 @@ for city in cities:
 # --- Insert Shows ---
 cur.execute("SELECT id, capacity FROM screens")
 screen_ids = [row[0:2] for row in cur.fetchall()]
-print(screen_ids)
+
 cur.execute("SELECT id FROM films")
 film_ids = [row[0] for row in cur.fetchall()]
 
 
 show_id_counter = 1
 for screen_id in screen_ids:
-    print(screen_id)
     num_shows = random.randint(1, 3)
     selected_times = random.sample(show_times, num_shows)
     for time in selected_times:

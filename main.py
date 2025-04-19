@@ -7,4 +7,4 @@ if __name__ == "__main__":
 	root.geometry("800x500")
 	
 	app = AppManager(root)
-	root.mainloop()
+	root.mainloop()	
