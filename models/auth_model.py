@@ -27,21 +27,6 @@ class AuthModel:
         row = cur.fetchone()
         conn.close()
 
-        # debugging output
-        print("=== LOGIN DEBUG ===")
-        print(" Email      :", email)
-        print(" Entered PW :", password)
-        print(" Hashed PW  :", hashed)
-        if row:
-            print(" DB id           :", row[0])
-            print(" DB First Name   :", row[1])
-            print(" DB Last  Name   :", row[2])
-            print(" DB PW hash      :", row[3])
-            print(" DB user_role    :", row[4])
-        else:
-            print(" NO user found for that email!")
-        print("===================")
-
         # check both existence and correct hash
         if not row or row[3] != hashed:
             return None

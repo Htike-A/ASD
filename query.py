@@ -1,16 +1,19 @@
 import sqlite3
+import hashlib
 
+def hash_pw(pw: str) -> str:
+    return hashlib.sha256(pw.encode()).hexdigest()
 conn = sqlite3.connect("movies.db")
 cur = conn.cursor()
 
-cur.execute('''
-SELECT 1 
-			FROM bookings
-			WHERE show_id = ? AND seat_id = ?
-			LIMIT 1
+PW = hash_pw("123")
 
-''', (8, 1))
-res = cur.fetchone() is not None
-print(res)
+cur.execute("""
+INSERT INTO users 
+  (user_FirstName,user_LastName, user_email, user_password, user_role) 
+VALUES (?, ?, ?, ?, ?)
+""", ('asdf', 'asdf', 'asdf', PW, 'Manager'))
+
+
 conn.commit()
 conn.close()

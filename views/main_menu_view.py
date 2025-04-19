@@ -38,6 +38,9 @@ class MainMenuView(tk.Frame):
 				width=6
 			)
 			btn.pack(side="left", padx=2)
+	def select_day(self, day):
+		self.selected_day.set(day)
+		self.update_movie_list()
 
 	def create_movie_list_area(self):
 		container = tk.Frame(self)
@@ -68,9 +71,7 @@ class MainMenuView(tk.Frame):
 		canvas.bind_all("<MouseWheel>", on_mousewheel)
 
 
-	def select_day(self, day):
-		self.selected_day.set(day)
-		self.update_movie_list()
+	
 
 
 	def update_movie_list(self):
@@ -111,8 +112,7 @@ class MainMenuView(tk.Frame):
 
 	def proceed_to_booking(self, movie):
 		print("Proceeding to book:", movie[0], "at", movie[6], "on", movie[7])
-		show_id = movie[6]
-		self.controller.open_seat_view(movie, show_id)
+		self.controller.show_seats(movie)
 
 
 

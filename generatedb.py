@@ -86,8 +86,8 @@ for screen_id in screen_ids:
         upper_hall_cap = capacity - vip_cap - lower_hall_cap
 
         # --- Insert Seats ---
-        lower_seats = [f"LA{n}" for n in range(1, lower_hall_cap + 1)]
-        upper_seats = [f"UB{n}" for n in range(1, upper_hall_cap + 1)]
+        lower_seats = [f"LH{n}" for n in range(1, lower_hall_cap + 1)]
+        upper_seats = [f"UG{n}" for n in range(1, upper_hall_cap + 1)]
         vip_seats = [f"VIP{n}" for n in range(1, vip_cap + 1)]
 
         s_id = screen_id[0]

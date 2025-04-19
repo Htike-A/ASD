@@ -20,8 +20,11 @@ class AppManager:
 		self.data = {
 			"UserID": None,
 			"Movie": [],
-			"Seat": [],
-			"Payment": [],
+			"Seats" : [],
+			"ShowID": None,
+			"Selected_Seats": [],
+			"Cost": None,
+			"Payment": None,
 		}
 		self.frames = {}
 		for C in (LoginController, StaffController, AdminController, ManagerController, MainMenuController, SeatController, PaymentController):

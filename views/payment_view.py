@@ -2,11 +2,13 @@ import tkinter as tk
 from tkinter import messagebox
 
 class PaymentView(tk.Toplevel):
-    def __init__(self, master, controller, movie, selected_seats, price_per_seat=6.00):
+    def __init__(self, master, controller, data, price_per_seat=6.00):
         super().__init__(master)
         self.controller = controller
-        self.selected_seats = selected_seats
-        self.total_price = len(selected_seats) * price_per_seat
+        self.data = data
+        self.selected_seats = self.data["Selected_Seats"]
+
+        self.total_price = len(self.selected_seats) * price_per_seat
 
         self.title("Payment")
         self.geometry("400x500")

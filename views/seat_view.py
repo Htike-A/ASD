@@ -2,14 +2,20 @@ import tkinter as tk
 from tkinter import messagebox
 
 class SeatView(tk.Toplevel):
-	def __init__(self, master, controller, seats_data, show_id, movie):
+	def __init__(self, master, controller, data):
 		super().__init__(master)
 		self.title("Select Your Seat")
 		self.controller = controller
-		self.seats_data = seats_data
-		self.show_id = show_id
+
+		self.data = data
+
+
+		self.seats_data = self.data["Seats"]
+
+
+		self.show_id = self.data["ShowID"]
 		self.selected_seats = []
-		self.movie = movie
+		self.movie = self.data["Movie"]
 		self.draw_seats()
 		self.draw_payment_button()
 
@@ -50,28 +56,24 @@ class SeatView(tk.Toplevel):
 	def toggle_selection(self, seat_code):
     # Get the button from the dictionary
 		btn = self.seat_buttons[seat_code]
-		
-		# Initialize selected_seats if it doesn't exist
-		if not hasattr(self, 'selected_seats'):
-			self.selected_seats = []
-		
-		# Toggle selection and update selected_seats list
-		if btn['fg'] == 'green':
-			btn['fg'] = 'blue'  # Selected
-			if seat_code not in self.selected_seats:
-				self.selected_seats.append(seat_code)
-		elif btn['fg'] == 'blue':
-			btn['fg'] = 'green'  # Unselected
-			if seat_code in self.selected_seats:
-				self.selected_seats.remove(seat_code)
+    
+    # Toggle selection and update selected_seats list
+		if seat_code in self.selected_seats:
+			# If already selected, deselect it
+			self.selected_seats.remove(seat_code)
+			btn['fg'] = 'green'  # Change back to available color
+		else:
+			# If not selected, select it
+			self.selected_seats.append(seat_code)
+			btn['fg'] = 'blue'  # Use a different color like blue for user-selected seats
 
-	def get_selected_seats(self):
-		return self.selected_seats
+	
 	
 	def draw_payment_button(self):
 		btn_frame = tk.Frame(self)
 		btn_frame.pack(padx=20, pady=20)
-		btn = tk.Button(btn_frame, text="Proceed to Payment", fg="blue", command=lambda m=self.movie, s = self.selected_seats : self.proceed_to_payment(m, s))
+		print(self.selected_seats)
+		btn = tk.Button(btn_frame, text="Proceed to Payment", fg="blue", command=lambda: self.proceed_to_payment(self.movie, self.selected_seats))
 		btn.pack()
 
 	def proceed_to_payment(self, movie, selected_seats):

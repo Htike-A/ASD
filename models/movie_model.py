@@ -1,7 +1,6 @@
 from models.database import get_connection
 
-class MovieModel:
-			
+class MovieModel:	
 	def get_location(self):
 		self.conn = get_connection()
 		self.cur = self.conn.cursor()
@@ -25,6 +24,7 @@ class MovieModel:
 			s.id,
 			s.show_time,
 			s.show_date,
+			s.price,
 			sc.id,
 			sc.screen_name,
 			c.cinema_name,
@@ -40,10 +40,6 @@ class MovieModel:
 		result = self.cur.fetchall()
 
 		return result
-
-	def get_movies_location_day(self, location, day):
-		#return self.dummy_data.get(location, {}).get(day, [])
-		pass
 
 	def get_seats(self, show_id):
 		conn = get_connection()

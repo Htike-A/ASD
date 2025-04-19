@@ -25,7 +25,7 @@ class LoginController:
         if not user:
             self.view.error_lbl.config(text="Invalid credentials")
             return
-
+        self.app.update_data(UserID=user["userId"])
         self.view.error_lbl.config(text="")
 
         role = user["userRole"]
