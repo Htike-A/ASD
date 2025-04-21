@@ -6,19 +6,18 @@ class StaffController:
     def __init__(self, master, app_manager, data):
         self.master = master
         self.app     = app_manager
-        self.user    = None            # set by app_manager on show
+        self.data    = data            # set by app_manager on show
         self.view    = StaffView(master, self)
 
-    def show(self, user):
-        self.user = user
-        self.view.welcome_lbl.config(text=f"Welcome, {user['userName']}")
+    def show(self):
+        self.view.welcome_lbl.config(text=f"Welcome, {self.data['UserName']}")
         self.view.pack(fill="both", expand=True)
 
     def hide(self):
         self.view.pack_forget()
 
     def view_listings(self):
-        self.app.show_frame("MainMenuController", self.user)
+        self.app.show_frame("MainMenuController")
 
     def cancel_booking(self, booking_ref):
         ok = self.model.cancel_booking(booking_ref)

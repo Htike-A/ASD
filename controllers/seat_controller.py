@@ -9,12 +9,11 @@ class SeatController():
 		self.model = MovieModel()
 		self.view = None
 
-	def show(self, data):
+	def show(self):
 		if self.view is None or not self.view.winfo_exists():
-			self.view = SeatView(self.master, self, data)
+			self.view = SeatView(self.master, self, self.data)
 		else:
-			self.view.deiconify()  # Re-show if it was withdrawn
-
+			self.view.deiconify() 
 	def hide(self):
 		if self.view and self.view.winfo_exists():
 			self.view.withdraw()

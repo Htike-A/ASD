@@ -11,8 +11,8 @@ class MainMenuController:
 		self.model = MovieModel()
 		self.view = MainMenuView(master, self)
 
-	def show(self, data):
-		self.view.pack()
+	def show(self):
+		self.view.pack(fill="both", expand=True)
 
 	def hide(self):
 		self.view.pack_forget()
@@ -35,20 +35,7 @@ class MainMenuController:
 
 	def logout(self):
 		self.app.show_frame("LoginController")
-		self.view.clear()
-
-
-
-
-
-
-
-	
-
-
-	
-	
-	
+		self.view.clear()	
 	
 	def open_payment_view(self, movie, seats):
 		PaymentView(self.master, self, movie, seats)
@@ -58,12 +45,6 @@ class MainMenuController:
 
 	def go_next():
 		pass
-	
-""" 	def open_seat_view(self, movie, show_id):
-		seats = self.get_seats(show_id)
-		self.app.update_data(Movie = movie)
-		SeatView(self.master, self, seats, show_id, movie) 
-"""
 	
 	
 	

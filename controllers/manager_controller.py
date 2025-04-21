@@ -11,10 +11,12 @@ class ManagerController(AdminController):
         self.user_model   = UserModel()
         self.view         = ManagerView(master, self)
 
-    def create_cinema(self, name, city, capacity):
+    def create_cinema(self, name: str, city: str, screens: list[dict]):
+        # screens is a list of {"name": "...", "capacity": <int>}
         cid = self.cinema_model.create_cinema(name, city)
-        self.cinema_model.create_screen(cid, capacity)
-        self.view.status_lbl.config(text="Cinema created.", fg="green")
+        for s in screens:
+            self.cinema_model.create_screen_with_name(cid, s["name"], s["capacity"])
+        self.view.status_lbl.config(text="Cinema + screens created", fg="green")
 
     def add_user(self, data):
         self.user_model.create_user(**data)

@@ -7,18 +7,13 @@ from controllers.seat_controller import SeatController
 from controllers.payment_controller import PaymentController
 
 LOGIN = "LoginController"
-STAFF = "StaffController"
-ADMIN = "AdminController"
-MANAGER = "ManagerController"
-MAINMENU = "MainMenuController"
-SEAT = "SeatController"
-PAYMENT = "PaymentController"
 
 class AppManager:
 	def __init__(self, root):
 		self.root = root
 		self.data = {
 			"UserID": None,
+			"UserName": None,
 			"Movie": [],
 			"Seats" : [],
 			"ShowID": None,
@@ -44,16 +39,16 @@ class AppManager:
 			ctrl.view.error_lbl.config(text="")
 
 		if ctrl:
-			ctrl.show(data)
+			ctrl.show()
 		else:
-			print(f"No controller for {name}")
+			print(f"Controller Error for {name}")
 
 	def update_data(self, **kwargs):
 		for key, value in kwargs.items():
 			if key in self.data:
 				self.data[key] = value
 			else:
-				print("Error in data passing")
+				print("Error in updating state")
 
 	def exit_application(self):
 		self.root.destroy()

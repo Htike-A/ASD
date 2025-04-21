@@ -9,8 +9,8 @@ class AdminController(StaffController):
         self.Movie_model     = MovieModel()
         self.view           = AdminView(master, self)
 
-    def show(self, user):
-        super().show(user)
+    def show(self):
+        super().show()
         # maybe refresh admin lists
 
     def add_film(self, data):

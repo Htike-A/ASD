@@ -9,9 +9,9 @@ class PaymentController():
 		self.model = MovieModel()
 		self.view = None
 		
-	def show(self, data):
+	def show(self):
 		if self.view is None or not self.view.winfo_exists():
-			self.view = PaymentView(self.master, self, data)
+			self.view = PaymentView(self.master, self, self.data)
 		else:
 			self.view.deiconify()  # Re-show if it was withdrawn
 
