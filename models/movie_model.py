@@ -1,4 +1,5 @@
 from models.database import get_connection
+import uuid
 
 class MovieModel:	
 	def get_location(self):
@@ -50,7 +51,6 @@ class MovieModel:
 		FROM seats s
 		JOIN shows sh ON s.screen_id = sh.screen_id
 		WHERE sh.id = ?
-
 		"""
 
 		cur.execute(query, (show_id,))
@@ -58,29 +58,61 @@ class MovieModel:
 		conn.close()
 		return seats
 
-	def check_seat(self, seat_id, seat_code, show_id):
+	def check_seat(self, seat_id, show_id):
 		conn = get_connection()
 		cur = conn.cursor()
 		query = """
-		SELECT 
-			bs.seat_id,
-			s.seat_code,
-			b.booking_ref,
-			b.booking_status
-		FROM 
-			booking_seat bs
-		JOIN 
-			bookings b ON bs.booking_id = b.id
-		JOIN 
-			seats s ON bs.seat_id = s.id
-		WHERE 
-			b.show_id = ?             -- the show ID you want to check
-			AND s.seat_code = ?       -- e.g., 'A10'
-			AND s.screen_id = ?       -- to ensure it's from the right screen
-			AND b.booking_status = 'confirmed';
+		SELECT 1
+		FROM booking_seat bs
+		JOIN bookings b ON bs.booking_id = b.id
+		WHERE bs.seat_id = ?
+		AND b.show_id = ?
+		AND b.booking_status = 'confirmed';
+
 		"""
-		cur.execute(query, (show_id, seat_code, seat_id)) 
-		result = cur.fetchone() is not None  # This returns True if a seat is booked, False otherwise
+		cur.execute(query, (seat_id, show_id)) 
+		result = cur.fetchone() is not None  # returns True if a seat is booked, False otherwise
 		cur.close()
 		conn.close()
 		return result
+	
+	def save_payment(self, customer_name, customer_email, card_info, total_cost, user_id, show_id, seats):
+		conn = get_connection()
+		cur = conn.cursor()
+
+		booking_ref = str(uuid.uuid4())[:8]  # 8 UUID to generate booking reference
+
+		cur.execute(
+			"""
+			INSERT INTO bookings (booking_ref, customer_name, customer_email, card_info, total_cost, booking_status, user_id, show_id)
+			VALUES (?, ?, ?, ?, ?, 'confirmed', ?, ?)
+			""", (booking_ref, customer_name, customer_email, card_info, total_cost, user_id, show_id))
+
+		booking_id = cur.lastrowid
+
+		for seat_id in seats:
+			cur.execute("""
+                INSERT INTO booking_seat (booking_id, seat_id)
+                VALUES (?, ?)
+            """, (booking_id, seat_id))
+
+		conn.commit()
+		conn.close()
+		return booking_id
+
+	def get_booking(self, booking_id):
+		print(booking_id)
+		conn = get_connection()
+		cur = conn.cursor()
+		cur.execute(
+			"""
+			SELECT * from bookings where id = ?
+			""", (booking_id,))
+		details = cur.fetchone()
+		print(details)
+
+		conn.commit()
+		conn.close()
+		return details
+		
+

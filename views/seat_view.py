@@ -12,7 +12,6 @@ class SeatView(tk.Toplevel):
 
 		self.seats_data = self.data["Seats"]
 
-
 		self.show_id = self.data["ShowID"]
 		self.selected_seats = []
 		self.movie = self.data["Movie"]
@@ -29,7 +28,7 @@ class SeatView(tk.Toplevel):
 		self.seat_buttons = {}
 
 		for seat_id, screen_id, seat_code, section in self.seats_data:
-			is_booked = self.controller.check_seat(seat_id, seat_code, self.show_id)
+			is_booked = self.controller.check_seat(seat_id, self.show_id)
 			color = "green" if not is_booked else "red"
 			state = "normal" if not is_booked else "disabled"
 
@@ -77,7 +76,12 @@ class SeatView(tk.Toplevel):
 
 	def proceed_to_payment(self, movie, selected_seats):
 		if selected_seats:
-			self.controller.open_payment_view(movie, selected_seats)
+			seat_ids = []
+			for seat_id, screen_id, seat_code, section in self.seats_data:
+				if seat_code in self.selected_seats:
+					seat_ids.append(seat_id)
+			
+			self.controller.open_payment_view(movie, selected_seats, seat_ids)
 		else:
 			messagebox.showerror("Error", "Please select seats!")
 

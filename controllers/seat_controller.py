@@ -18,10 +18,10 @@ class SeatController():
 		if self.view and self.view.winfo_exists():
 			self.view.withdraw()
 	
-	def check_seat(self, seat_id, seat_code, show_id):
-		return self.model.check_seat(seat_id, seat_code, show_id)
+	def check_seat(self, seat_id, show_id):
+		return self.model.check_seat(seat_id, show_id)
 
-	def open_payment_view(self, movie, selected_seats):
+	def open_payment_view(self, movie, selected_seats, seat_ids):
 		price = movie[-5]
 		total_price = 0
 		for seat_code in selected_seats:
@@ -38,7 +38,7 @@ class SeatController():
 			total_price += price
 
 
-		self.app.update_data(Movie = movie, Selected_Seats = selected_seats, Payment = total_price)
+		self.app.update_data(Movie = movie, Selected_Seats = selected_seats, Payment = total_price, Seat_Ids = seat_ids)
 
 
 		self.app.show_frame("PaymentController", self.app.data)

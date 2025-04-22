@@ -19,5 +19,15 @@ class PaymentController():
 		if self.view and self.view.winfo_exists():
 			self.view.withdraw()
 
-	def save_payment(self):
-		self.model.save_payment()
+	def save_payment(self, name, email, card):
+		cost = self.data["Payment"]
+		user_id = self.data["UserID"]
+		show_id = self.data["ShowID"]
+		seat_ids = self.data["Seat_Ids"]
+		booking_id = self.model.save_payment(name, email, card, cost, user_id, show_id, seat_ids)
+		self.controller.update_data(BookingId = booking_id)
+
+	def get_receipt(self):
+		bookingid = self.data["BookingId"]
+		data = self.model.get_booking(bookingid)
+		return data

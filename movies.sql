@@ -58,7 +58,10 @@ CREATE TABLE IF NOT EXISTS seats (
 
 CREATE TABLE IF NOT EXISTS bookings (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    booking_ref       TEXT    NOT NULL UNIQUE,
+    booking_ref       TEXT  NOT NULL UNIQUE,
+    customer_name     TEXT  NOT NULL,
+    customer_email    TEXT  NOT NULL,
+    card_info   INTEGER   NOT NULL,
     total_cost        REAL    NOT NULL,
     booking_DateTime  TEXT    DEFAULT CURRENT_TIMESTAMP,
     booking_status    TEXT    NOT NULL
@@ -76,8 +79,6 @@ CREATE TABLE IF NOT EXISTS booking_seat (
     FOREIGN KEY (booking_id) REFERENCES bookings(id),
     FOREIGN KEY (seat_id)    REFERENCES seats(id)
 );
-
-
 
 CREATE TABLE IF NOT EXISTS cancellation (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,

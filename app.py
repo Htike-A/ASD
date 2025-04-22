@@ -18,8 +18,10 @@ class AppManager:
 			"Seats" : [],
 			"ShowID": None,
 			"Selected_Seats": [],
+			"Seat_Ids": [],
 			"Cost": None,
 			"Payment": None,
+			"BookingId": None
 		}
 		self.frames = {}
 		for C in (LoginController, StaffController, AdminController, ManagerController, MainMenuController, SeatController, PaymentController):
