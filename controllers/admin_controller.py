@@ -11,7 +11,6 @@ class AdminController(StaffController):
 
     def show(self):
         super().show()
-        # maybe refresh admin lists
 
     def add_film(self, data):
         self.film_model.create_film(**data)

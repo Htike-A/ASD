@@ -36,9 +36,6 @@ class MainMenuController:
 	def logout(self):
 		self.app.show_frame("LoginController")
 		self.view.clear()	
-	
-	def open_payment_view(self, movie, seats):
-		PaymentView(self.master, self, movie, seats)
 
 	def go_back():
 		pass
