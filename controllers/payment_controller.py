@@ -34,4 +34,4 @@ class PaymentController():
 
 	def go_back(self):
 		self.app.update_data(Movie = None, Selected_Seats = None, Payment = None, Seat_Ids = None)
-		self.app.show_frame("SeatController", self.data)
+		self.app.show_frame("SeatController", self.app.data)
