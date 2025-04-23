@@ -6,9 +6,9 @@ class SeatView(tk.Toplevel):
 		super().__init__(master)
 		self.title("Select Your Seat")
 		self.controller = controller
-
 		self.data = data
 
+		self.protocol("WM_DELETE_WINDOW", self.go_back)
 
 		self.seats_data = self.data["Seats"]
 
@@ -17,6 +17,10 @@ class SeatView(tk.Toplevel):
 		self.movie = self.data["Movie"]
 		self.draw_seats()
 		self.draw_payment_button()
+
+	def go_back(self):
+		self.controller.go_back()
+		self.destroy()
 
 	def draw_seats(self):
 		seat_frame = tk.Frame(self)
@@ -101,8 +105,10 @@ class SeatView(tk.Toplevel):
 	def draw_payment_button(self):
 		btn_frame = tk.Frame(self)
 		btn_frame.pack(padx=20, pady=20)
-		btn = tk.Button(btn_frame, text="Proceed to Payment", fg="blue", command=lambda: self.proceed_to_payment(self.movie, self.selected_seats))
-		btn.pack()
+		back_btn = tk.Button(btn_frame, text="Back", fg="blue", command=lambda: self.go_back())
+		back_btn.grid(row=0, column=0, padx=5, pady=5)
+		pay_btn = tk.Button(btn_frame, text="Proceed to Payment", fg="blue", command=lambda: self.proceed_to_payment(self.movie, self.selected_seats))
+		pay_btn.grid(row=0, column=1, padx=10, pady=5)
 
 	def proceed_to_payment(self, movie, selected_seats):
 		if selected_seats:
