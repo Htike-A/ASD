@@ -85,7 +85,7 @@ class PaymentView(tk.Toplevel):
         
     def show_receipt(self):
         details = self.controller.get_receipt()
-        booking_ref = "sadf"
+        booking_ref = details[1]
         name = details[2]
         total_cost = details[5]
         seats = self.data["Selected_Seats"]
