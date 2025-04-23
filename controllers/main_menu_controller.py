@@ -12,14 +12,13 @@ class MainMenuController:
 		self.view = None
 
 	def show(self):
+		if self.view is None or not self.view.winfo_exists():
+			self.view = MainMenuView(self.master, self, self.data)
+		else:
+			self.view.deiconify() 
+	def hide(self):
 		if self.view and self.view.winfo_exists():
-			self.view.destroy()	
-		self.view = MainMenuView(self.master, self, self.data)  
-
-
-	""" def hide(self):
-		if self.view and self.view.winfo_exists():
-			self.view.withdraw() """
+			self.view.withdraw()
 	def exit(self):
 		self.app.exit_application()
 
