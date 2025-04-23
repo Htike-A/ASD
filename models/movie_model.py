@@ -101,7 +101,6 @@ class MovieModel:
 		return booking_id
 
 	def get_booking(self, booking_id):
-		print(booking_id)
 		conn = get_connection()
 		cur = conn.cursor()
 		cur.execute(
@@ -109,7 +108,6 @@ class MovieModel:
 			SELECT * from bookings where id = ?
 			""", (booking_id,))
 		details = cur.fetchone()
-		print(details)
 
 		conn.commit()
 		conn.close()

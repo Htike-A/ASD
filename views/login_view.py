@@ -2,7 +2,7 @@
 import tkinter as tk
 
 class LoginView(tk.Frame):
-    def __init__(self, master, controller, data):
+    def __init__(self, master, controller):
         super().__init__(master, width=400, height=300)
         self.ctrl = controller
         self.pack_propagate(False)

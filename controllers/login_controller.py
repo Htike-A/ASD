@@ -10,7 +10,7 @@ class LoginController:
         self.app     = app_manager
         self.model   = AuthModel()
         self.data = data
-        self.view    = LoginView(master, self, self.data)
+        self.view    = LoginView(master, self)
 
 
     def show(self):
@@ -41,7 +41,5 @@ class LoginController:
             messagebox.showerror("Login", f"Unknown role: {role}")
             
     def logout(self):
-        # 1) switch back to the login screen
         self.app.show_frame("LoginController")
-        # 2) clear out the old credentials
         self.view.clear()

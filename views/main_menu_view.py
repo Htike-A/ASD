@@ -7,10 +7,16 @@ class MainMenuView(tk.Toplevel):
 		self.controller = controller
 		self.geometry("1000x700")
 		self.data = data
-		print(self.data)
 		user = self.data["UserName"]
-		self.label = tk.Label(self, text=f"Welcome, {user}")
-		self.label.pack()
+  
+		container = tk.Frame(self)
+		container.pack(fill="x", padx=10, pady=10)
+
+		self.label = tk.Label(container, text=f"Welcome, {user}")
+		self.label.pack(side="left")
+
+		button = tk.Button(container, text="Logout", command=self.log_out)
+		button.pack(side="right")
 
 		self.selected_city = tk.StringVar(value="Bristol")
 		self.selected_day = tk.StringVar(value="Monday")
@@ -113,6 +119,9 @@ class MainMenuView(tk.Toplevel):
 	def proceed_to_booking(self, movie):
 		print("Proceeding to book:", movie[0], "at", movie[6], "on", movie[7])
 		self.controller.show_seats(movie)
+  
+	def log_out(self):
+		self.controller.log_out()
 
 
 

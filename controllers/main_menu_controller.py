@@ -13,11 +13,7 @@ class MainMenuController:
 
 	def show(self):
 		if self.view and self.view.winfo_exists():
-			self.view.destroy()
-		else:
-			print("here")
-		
-		self.master.withdraw()
+			self.view.destroy()	
 		self.view = MainMenuView(self.master, self, self.data)  
 
 
@@ -43,9 +39,9 @@ class MainMenuController:
 		self.app.update_data(Movie = movie, Seats = seats, ShowID = show_id)
 		self.app.show_frame("SeatController")
 
-	def logout(self):
+	def log_out(self):
+		self.view.withdraw()
 		self.app.show_frame("LoginController")
-		self.view.clear()	
 
 	def go_back():
 		pass
