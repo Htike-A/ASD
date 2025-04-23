@@ -12,14 +12,18 @@ class MainMenuController:
 		self.view = None
 
 	def show(self):
-		if self.view is None or not self.view.winfo_exists():
-			self.master.withdraw()
-			self.view = MainMenuView(self.master, self, self.data)
-		else:
-			self.view.deiconify() 
-	def hide(self):
 		if self.view and self.view.winfo_exists():
-			self.view.withdraw()
+			self.view.destroy()
+		else:
+			print("here")
+		
+		self.master.withdraw()
+		self.view = MainMenuView(self.master, self, self.data)  
+
+
+	""" def hide(self):
+		if self.view and self.view.winfo_exists():
+			self.view.withdraw() """
 	def exit(self):
 		self.app.exit_application()
 
@@ -37,7 +41,7 @@ class MainMenuController:
 		screen_id = movie[-4]
 		seats = self.get_seats(screen_id)
 		self.app.update_data(Movie = movie, Seats = seats, ShowID = show_id)
-		self.app.show_frame("SeatController", self.data)
+		self.app.show_frame("SeatController")
 
 	def logout(self):
 		self.app.show_frame("LoginController")

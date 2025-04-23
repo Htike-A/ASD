@@ -32,11 +32,11 @@ class LoginController:
         self.hide()
         role = user["userRole"]
         if role == "Booking Staff":
-            self.app.show_frame("StaffController", self.data)
+            self.app.show_frame("StaffController")
         elif role == "Admin":
-            self.app.show_frame("AdminController", self.data)
+            self.app.show_frame("AdminController")
         elif role == "Manager":
-            self.app.show_frame("ManagerController", self.data)
+            self.app.show_frame("ManagerController")
         else:
             messagebox.showerror("Login", f"Unknown role: {role}")
             

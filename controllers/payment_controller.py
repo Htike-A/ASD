@@ -1,5 +1,6 @@
 from views.payment_view import PaymentView
 from models.movie_model import MovieModel
+from controllers.main_menu_controller import MainMenuController
 
 class PaymentController():
 	def __init__(self, master, app, data):
@@ -34,16 +35,8 @@ class PaymentController():
 
 	def go_back(self):
 		self.app.update_data(Movie = None, Selected_Seats = None, Payment = None, Seat_Ids = None)
-		self.app.show_frame("SeatController", self.app.data)
+		self.app.show_frame("SeatController")
   
 	def redirect(self):
-		self.app.update_data(
-			Movie = None,
-			Seats = None,
-			ShowID =None,
-			Selected_Seats = None,
-			Seat_Ids = None,
-			Payment= None,
-			BookingId =  None)
-		self.app.hide_all_views()
-		self.app.show_frame("MainMenuController", self.data)
+		self.app.update_data(Movie = None, Seats = None, ShowID =None, Selected_Seats = None, Seat_Ids = None, Payment= None, BookingId =  None)
+		self.app.show_frame("MainMenuController")

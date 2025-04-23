@@ -29,7 +29,7 @@ class AppManager:
 			self.frames[C.__name__] = controller
 		self.show_frame(LOGIN)
 
-	def show_frame(self, name, data = None):
+	def show_frame(self, name):
 		# Hide all visible windows first
 		self.hide_all_views()
 		
