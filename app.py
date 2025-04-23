@@ -45,6 +45,7 @@ class AppManager:
 		else:
 			print(f"Controller Error for {name}")
 
+
 	def update_data(self, **kwargs):
 		for key, value in kwargs.items():
 			if key in self.data:
@@ -59,3 +60,7 @@ class AppManager:
 		for ctrl in self.frames.values():
 			if hasattr(ctrl, 'hide'):
 				ctrl.hide()
+    
+
+        
+        

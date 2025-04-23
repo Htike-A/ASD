@@ -1,13 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 
-class MainMenuView(tk.Frame):
-	def __init__(self, master, controller):
+class MainMenuView(tk.Toplevel):
+	def __init__(self, master, controller, data):
 		super().__init__(master)
 		self.controller = controller
-
-
-		self.label = tk.Label(self, text="Welcome")
+		self.geometry("1000x700")
+		self.data = data
+		print(self.data)
+		user = self.data["UserName"]
+		self.label = tk.Label(self, text=f"Welcome, {user}")
 		self.label.pack()
 
 		self.selected_city = tk.StringVar(value="Bristol")
@@ -17,6 +19,8 @@ class MainMenuView(tk.Frame):
 		self.create_day_buttons()
 		self.create_movie_list_area()
 		self.update_movie_list()
+  
+		self.protocol("WM_DELETE_WINDOW", self.controller.exit)
 
 	def create_dropdown(self):
 		frame = tk.Frame(self)
@@ -69,10 +73,6 @@ class MainMenuView(tk.Frame):
 			canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 		
 		canvas.bind_all("<MouseWheel>", on_mousewheel)
-
-
-	
-
 
 	def update_movie_list(self):
 		# Clear current area

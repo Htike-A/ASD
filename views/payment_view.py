@@ -101,5 +101,9 @@ class PaymentView(tk.Toplevel):
         messagebox.showinfo("Payment Success", 
             f"Booking Confirmed!\nRef: {booking_ref}\nCustomer Name: {name}\nSeats: {', '.join(self.selected_seats)}\nTotal: £{total_cost:.2f}")
         self.destroy()
+        self.redirect()
+        
+    def redirect(self):
+        self.controller.redirect()
 
         

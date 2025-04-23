@@ -9,7 +9,9 @@ class LoginController:
         self.master = master
         self.app     = app_manager
         self.model   = AuthModel()
-        self.view    = LoginView(master, self)
+        self.data = data
+        self.view    = LoginView(master, self, self.data)
+
 
     def show(self):
         self.view.pack(fill="both", expand=True)
@@ -27,14 +29,14 @@ class LoginController:
             return
         self.app.update_data(UserID=user["userId"], UserName=user["userName"])
         self.view.error_lbl.config(text="")
-
+        self.hide()
         role = user["userRole"]
         if role == "Booking Staff":
-            self.app.show_frame("StaffController")
+            self.app.show_frame("StaffController", self.data)
         elif role == "Admin":
-            self.app.show_frame("AdminController")
+            self.app.show_frame("AdminController", self.data)
         elif role == "Manager":
-            self.app.show_frame("ManagerController")
+            self.app.show_frame("ManagerController", self.data)
         else:
             messagebox.showerror("Login", f"Unknown role: {role}")
             

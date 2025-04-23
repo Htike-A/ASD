@@ -17,6 +17,7 @@ class StaffController:
         self.view.pack_forget()
 
     def view_listings(self):
+        self.hide()
         self.app.show_frame("MainMenuController")
 
     def cancel_booking(self, booking_ref):

@@ -9,13 +9,19 @@ class MainMenuController:
 		self.app = app
 		self.data = data
 		self.model = MovieModel()
-		self.view = MainMenuView(master, self)
+		self.view = None
 
 	def show(self):
-		self.view.pack(fill="both", expand=True)
-
+		if self.view is None or not self.view.winfo_exists():
+			self.master.withdraw()
+			self.view = MainMenuView(self.master, self, self.data)
+		else:
+			self.view.deiconify() 
 	def hide(self):
-		self.view.pack_forget()
+		if self.view and self.view.winfo_exists():
+			self.view.withdraw()
+	def exit(self):
+		self.app.exit_application()
 
 	def get_location(self):
 		return self.model.get_location()
@@ -31,8 +37,7 @@ class MainMenuController:
 		screen_id = movie[-4]
 		seats = self.get_seats(screen_id)
 		self.app.update_data(Movie = movie, Seats = seats, ShowID = show_id)
-		self.hide()
-		self.app.show_frame("SeatController", self.app.data)
+		self.app.show_frame("SeatController", self.data)
 
 	def logout(self):
 		self.app.show_frame("LoginController")

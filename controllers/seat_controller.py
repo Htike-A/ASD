@@ -39,11 +39,9 @@ class SeatController():
 
 
 		self.app.update_data(Movie = movie, Selected_Seats = selected_seats, Payment = total_price, Seat_Ids = seat_ids)
-
-
+		self.hide()
 		self.app.show_frame("PaymentController", self.app.data)
   
 	def go_back(self):
 		self.app.update_data(Movie = None, Seats = None, ShowID = None)
-		print(self.data)
 		self.app.show_frame("MainMenuController", self.data)

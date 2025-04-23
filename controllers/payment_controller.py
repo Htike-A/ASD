@@ -25,7 +25,7 @@ class PaymentController():
 		show_id = self.data["ShowID"]
 		seat_ids = self.data["Seat_Ids"]
 		booking_id = self.model.save_payment(name, email, card, cost, user_id, show_id, seat_ids)
-		self.controller.update_data(BookingId = booking_id)
+		self.app.update_data(BookingId = booking_id)
 
 	def get_receipt(self):
 		bookingid = self.data["BookingId"]
@@ -35,3 +35,15 @@ class PaymentController():
 	def go_back(self):
 		self.app.update_data(Movie = None, Selected_Seats = None, Payment = None, Seat_Ids = None)
 		self.app.show_frame("SeatController", self.app.data)
+  
+	def redirect(self):
+		self.app.update_data(
+			Movie = None,
+			Seats = None,
+			ShowID =None,
+			Selected_Seats = None,
+			Seat_Ids = None,
+			Payment= None,
+			BookingId =  None)
+		self.app.hide_all_views()
+		self.app.show_frame("MainMenuController", self.data)

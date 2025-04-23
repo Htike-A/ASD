@@ -7,7 +7,6 @@ class SeatView(tk.Toplevel):
 		self.title("Select Your Seat")
 		self.controller = controller
 		self.data = data
-
 		self.protocol("WM_DELETE_WINDOW", self.go_back)
 
 		self.seats_data = self.data["Seats"]
@@ -17,15 +16,14 @@ class SeatView(tk.Toplevel):
 		self.movie = self.data["Movie"]
 		self.draw_seats()
 		self.draw_payment_button()
-
 	def go_back(self):
 		self.controller.go_back()
 		self.destroy()
-
 	def draw_seats(self):
 		seat_frame = tk.Frame(self)
 		seat_frame.pack(padx=20, pady=20)
-		
+		for widget in seat_frame.winfo_children():
+			widget.destroy()
 		# Dictionary to store buttons by seat code
 		self.seat_buttons = {}
 		

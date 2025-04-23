@@ -2,11 +2,10 @@
 import tkinter as tk
 
 class LoginView(tk.Frame):
-    def __init__(self, master, controller):
+    def __init__(self, master, controller, data):
         super().__init__(master, width=400, height=300)
         self.ctrl = controller
         self.pack_propagate(False)
-
         self.container = tk.Frame(self)
         self.container.place(relx=0.5, rely=0.5, anchor="center")
 
