@@ -61,6 +61,10 @@ class AppManager:
 			if hasattr(ctrl, 'hide'):
 				ctrl.hide()
     
+	def destroy_window(self, name):
+		ctrl = self.frames.get(name)
+		ctrl.destroy()
+    
 
         
         

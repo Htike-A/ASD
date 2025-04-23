@@ -21,6 +21,9 @@ class MainMenuController:
 			self.view.withdraw()
 	def exit(self):
 		self.app.exit_application()
+	def destroy(self):
+		if self.view and self.view.winfo_exists():
+			self.view.destroy()
 
 	def get_location(self):
 		return self.model.get_location()

@@ -17,6 +17,10 @@ class SeatController():
 	def hide(self):
 		if self.view and self.view.winfo_exists():
 			self.view.withdraw()
+   
+	def destroy(self):
+		if self.view and self.view.winfo_exists():
+			self.view.destroy()
 	
 	def check_seat(self, seat_id, show_id):
 		return self.model.check_seat(seat_id, show_id)

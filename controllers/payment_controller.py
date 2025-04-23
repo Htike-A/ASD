@@ -39,4 +39,6 @@ class PaymentController():
   
 	def redirect(self):
 		self.app.update_data(Movie = None, Seats = None, ShowID =None, Selected_Seats = None, Seat_Ids = None, Payment= None, BookingId =  None)
+		self.app.destroy_window("MainMenuController")
+		self.app.destroy_window("SeatController")
 		self.app.show_frame("MainMenuController")
