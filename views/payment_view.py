@@ -14,8 +14,12 @@ class PaymentView(tk.Toplevel):
         self.title("Payment")
         self.geometry("400x500")
         self.resizable(False, False)
-
+        self.protocol("WM_DELETE_WINDOW", self.go_back)
         self.create_widgets()
+        
+    def go_back(self):
+        self.controller.go_back()
+        self.destroy()
 
     def validate_card_input(self, new_value):
         return (new_value.isdigit() or new_value == "") and len(new_value) <= 16
@@ -61,8 +65,13 @@ class PaymentView(tk.Toplevel):
         self.expiry_entry = tk.Entry(form_frame, validate='key', validatecommand=vcmd_expiry)
         self.expiry_entry.insert(0, "04/28")  # placeholder
         self.expiry_entry.grid(row=4, column=1, padx=5, pady=5)
-
-        tk.Button(self, text="Confirm Payment", fg="black", command=self.confirm_payment).pack(pady=20)
+        
+        btn_frame = tk.Frame(self)
+        btn_frame.pack(padx=20, pady=20)
+        back_btn = tk.Button(btn_frame, text="Go back", fg="black", command=self.go_back)
+        back_btn.grid(row=0, column=0, padx=5, pady=5)
+        confirm_btn = tk.Button(btn_frame, text="Confirm Payment", fg="black", command=self.confirm_payment)
+        confirm_btn.grid(row=0, column=1, padx=5, pady=5)
 
     def confirm_payment(self):
         name = self.name_entry.get()

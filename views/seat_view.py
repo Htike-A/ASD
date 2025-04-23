@@ -119,7 +119,9 @@ class SeatView(tk.Toplevel):
 			
 			self.controller.open_payment_view(movie, selected_seats, seat_ids)
 		else:
-			messagebox.showerror("Error", "Please select seats!")
+			messagebox.showerror("Error", "Please select seats!", parent = self)
+			#self.controller.show()
+
 
 
 		

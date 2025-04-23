@@ -31,6 +31,7 @@ class MainMenuController:
 		screen_id = movie[-4]
 		seats = self.get_seats(screen_id)
 		self.app.update_data(Movie = movie, Seats = seats, ShowID = show_id)
+		self.hide()
 		self.app.show_frame("SeatController", self.app.data)
 
 	def logout(self):
