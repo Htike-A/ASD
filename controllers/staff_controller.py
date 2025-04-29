@@ -1,12 +1,14 @@
 # controllers/staff_controller.py
 import tkinter as tk
 from views.staff_view import StaffView
+from views.booking_view import BookingsView
+from views.refund_history_view import RefundHistoryView
 
 class StaffController:
     def __init__(self, master, app_manager, data):
         self.master = master
         self.app     = app_manager
-        self.data    = data            # set by app_manager on show
+        self.data    = data 
         self.view    = StaffView(master, self)
 
     def show(self):
@@ -24,3 +26,9 @@ class StaffController:
         ok = self.model.cancel_booking(booking_ref)
         msg = "Cancelled" if ok else "Failed to cancel"
         self.view.status_lbl.config(text=msg, fg="green" if ok else "red")
+    
+    def open_bookings_view(self):
+        BookingsView(self.master,self)
+
+    def open_refund_history(self):
+        RefundHistoryView(self.master)
