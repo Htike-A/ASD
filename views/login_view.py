@@ -6,7 +6,6 @@ class LoginView(tk.Frame):
         super().__init__(master, width=400, height=300)
         self.ctrl = controller
         self.pack_propagate(False)
-
         self.container = tk.Frame(self)
         self.container.place(relx=0.5, rely=0.5, anchor="center")
 

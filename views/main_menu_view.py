@@ -1,14 +1,22 @@
 import tkinter as tk
 from tkinter import ttk
 
-class MainMenuView(tk.Frame):
-	def __init__(self, master, controller):
+class MainMenuView(tk.Toplevel):
+	def __init__(self, master, controller, data):
 		super().__init__(master)
 		self.controller = controller
+		self.geometry("1000x700")
+		self.data = data
+		user = self.data["UserName"]
+  
+		container = tk.Frame(self)
+		container.pack(fill="x", padx=10, pady=10)
 
+		self.label = tk.Label(container, text=f"Welcome, {user}")
+		self.label.pack(side="left")
 
-		self.label = tk.Label(self, text="Welcome")
-		self.label.pack()
+		button = tk.Button(container, text="Logout", command=self.log_out)
+		button.pack(side="right")
 
 		self.selected_city = tk.StringVar(value="Bristol")
 		self.selected_day = tk.StringVar(value="Monday")
@@ -17,6 +25,8 @@ class MainMenuView(tk.Frame):
 		self.create_day_buttons()
 		self.create_movie_list_area()
 		self.update_movie_list()
+  
+		self.protocol("WM_DELETE_WINDOW", self.controller.exit)
 
 	def create_dropdown(self):
 		frame = tk.Frame(self)
@@ -70,10 +80,6 @@ class MainMenuView(tk.Frame):
 		
 		canvas.bind_all("<MouseWheel>", on_mousewheel)
 
-
-	
-
-
 	def update_movie_list(self):
 		# Clear current area
 		for widget in self.movie_frame.winfo_children():
@@ -113,6 +119,9 @@ class MainMenuView(tk.Frame):
 	def proceed_to_booking(self, movie):
 		print("Proceeding to book:", movie[0], "at", movie[6], "on", movie[7])
 		self.controller.show_seats(movie)
+  
+	def log_out(self):
+		self.controller.log_out()
 
 
 

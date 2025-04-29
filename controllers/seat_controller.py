@@ -17,11 +17,10 @@ class SeatController():
 	def hide(self):
 		if self.view and self.view.winfo_exists():
 			self.view.withdraw()
-
-	def go_back(self):
-		self.hide()
-		main_menu = self.app.frames["MainMenuController"]
-		main_menu.return_from_seats()
+   
+	def destroy(self):
+		if self.view and self.view.winfo_exists():
+			self.view.destroy()
 	
 	def check_seat(self, seat_id, show_id):
 		return self.model.check_seat(seat_id, show_id)
@@ -44,6 +43,9 @@ class SeatController():
 
 
 		self.app.update_data(Movie = movie, Selected_Seats = selected_seats, Payment = total_price, Seat_Ids = seat_ids)
-
-
-		self.app.show_frame("PaymentController", self.app.data)
+		self.hide()
+		self.app.show_frame("PaymentController")
+  
+	def go_back(self):
+		self.app.update_data(Movie = None, Seats = None, ShowID = None)
+		self.app.show_frame("MainMenuController")

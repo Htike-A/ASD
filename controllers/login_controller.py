@@ -9,7 +9,9 @@ class LoginController:
         self.master = master
         self.app     = app_manager
         self.model   = AuthModel()
+        self.data = data
         self.view    = LoginView(master, self)
+
 
     def show(self):
         self.view.pack(fill="both", expand=True)
@@ -27,7 +29,7 @@ class LoginController:
             return
         self.app.update_data(UserID=user["userId"], UserName=user["userName"])
         self.view.error_lbl.config(text="")
-
+        self.hide()
         role = user["userRole"]
         if role == "Booking Staff":
             self.app.show_frame("StaffController")
@@ -39,7 +41,5 @@ class LoginController:
             messagebox.showerror("Login", f"Unknown role: {role}")
             
     def logout(self):
-        # 1) switch back to the login screen
         self.app.show_frame("LoginController")
-        # 2) clear out the old credentials
         self.view.clear()

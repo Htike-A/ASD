@@ -29,7 +29,7 @@ class AppManager:
 			self.frames[C.__name__] = controller
 		self.show_frame(LOGIN)
 
-	def show_frame(self, name, data = None):
+	def show_frame(self, name):
 		# Hide all visible windows first
 		self.hide_all_views()
 		
@@ -45,6 +45,7 @@ class AppManager:
 		else:
 			print(f"Controller Error for {name}")
 
+
 	def update_data(self, **kwargs):
 		for key, value in kwargs.items():
 			if key in self.data:
@@ -59,3 +60,11 @@ class AppManager:
 		for ctrl in self.frames.values():
 			if hasattr(ctrl, 'hide'):
 				ctrl.hide()
+    
+	def destroy_window(self, name):
+		ctrl = self.frames.get(name)
+		ctrl.destroy()
+    
+
+        
+        
