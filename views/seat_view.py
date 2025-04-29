@@ -18,6 +18,8 @@ class SeatView(tk.Toplevel):
 		self.draw_seats()
 		self.draw_payment_button()
 
+		self.protocol("WM_DELETE_WINDOW", self.controller.go_back)
+
 	def draw_seats(self):
 		seat_frame = tk.Frame(self)
 		seat_frame.pack(padx=20, pady=20)

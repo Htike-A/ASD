@@ -17,6 +17,11 @@ class SeatController():
 	def hide(self):
 		if self.view and self.view.winfo_exists():
 			self.view.withdraw()
+
+	def go_back(self):
+		self.hide()
+		main_menu = self.app.frames["MainMenuController"]
+		main_menu.return_from_seats()
 	
 	def check_seat(self, seat_id, show_id):
 		return self.model.check_seat(seat_id, show_id)
