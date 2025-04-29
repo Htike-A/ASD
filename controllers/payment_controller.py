@@ -1,13 +1,12 @@
 from views.payment_view import PaymentView
-from models.movie_model import MovieModel
-from controllers.main_menu_controller import MainMenuController
+from models.paymente_model import PaymentModel
 
 class PaymentController():
 	def __init__(self, master, app, data):
 		self.master = master
 		self.app = app
 		self.data = data
-		self.model = MovieModel()
+		self.model = PaymentModel()
 		self.view = None
 		
 	def show(self):
