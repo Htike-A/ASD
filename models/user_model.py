@@ -44,3 +44,25 @@ class UserModel:
         ))
         self.conn.commit()
         return self.cur.lastrowid
+    def list_users(self):
+        """
+        Retrieve all users as a list of tuples:
+        (id, first name, last name, email, role)
+        """
+        self.cur.execute("""
+            SELECT id, user_FirstName, user_LastName, user_email, user_role
+              FROM users
+        """)
+        return self.cur.fetchall()
+
+    def delete_user_by_email_and_role(self, email, role):
+        """
+        Delete the user record matching exactly this email & role.
+        Returns the number of rows deleted (0 if none).
+        """
+        self.cur.execute("""
+            DELETE FROM users
+             WHERE user_email = ? AND user_role = ?
+        """, (email, role))
+        self.conn.commit()
+        return self.cur.rowcount

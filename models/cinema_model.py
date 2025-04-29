@@ -1,4 +1,3 @@
-# models/cinema_model.py
 import math, random
 from models.database import get_connection
 
@@ -72,3 +71,54 @@ class CinemaModel:
         conn.commit()
         conn.close()
         return screen_id
+    
+    def delete_cinema(self, cinema_id: int):
+        """
+        Delete a cinema *and* all of its screens and seats.
+        """
+        conn = get_connection()
+        cur  = conn.cursor()
+
+        # 1) Delete all seats on any screens belonging to this cinema
+        cur.execute("""
+            DELETE FROM seats
+             WHERE screen_id IN (
+                 SELECT id FROM screens WHERE cinema_id = ?
+             )
+        """, (cinema_id,))
+
+        # 2) Delete all screens for this cinema
+        cur.execute("DELETE FROM screens WHERE cinema_id = ?", (cinema_id,))
+
+        # 3) Finally delete the cinema itself
+        cur.execute("DELETE FROM cinemas WHERE id = ?", (cinema_id,))
+
+        conn.commit()
+        conn.close()
+
+    def list_all_details(self):
+        """
+        Returns a list of:
+          (cinema_id, cinema_name, city, num_screens, total_capacity, total_seats)
+        """
+        conn = get_connection()
+        cur  = conn.cursor()
+        cur.execute("""
+            SELECT
+              c.id,
+              c.cinema_name,
+              c.city,
+              COUNT(DISTINCT sc.id)        AS num_screens,
+              COALESCE(SUM(sc.capacity),0) AS total_capacity,
+              COUNT(s.id)                  AS total_seats
+            FROM cinemas c
+            LEFT JOIN screens sc 
+              ON sc.cinema_id = c.id
+            LEFT JOIN seats s
+              ON s.screen_id = sc.id
+            GROUP BY c.id, c.cinema_name, c.city
+            ORDER BY c.cinema_name
+        """)
+        rows = cur.fetchall()
+        conn.close()
+        return rows

@@ -75,3 +75,35 @@ class MovieModel:
 		cur.close()
 		conn.close()
 		return result
+	
+	def create_film(self, film_name, film_disc, film_age, film_rating, film_cast, duration):
+		conn = get_connection()
+		cur  = conn.cursor()
+		cur.execute("""
+            INSERT INTO films
+              (film_name, film_disc, film_age, film_rating, film_cast, duration)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (film_name, film_disc, film_age, film_rating, film_cast, duration))
+		conn.commit()
+		fid = cur.lastrowid
+		conn.close()
+		return fid
+
+	def delete_film(self, film_name, duration):
+		conn = get_connection()
+		cur  = conn.cursor()
+		cur.execute("""
+            DELETE FROM films
+             WHERE film_name = ?
+               AND duration  = ?
+        """, (film_name, duration))
+		conn.commit()
+		conn.close()
+
+	def list_all(self):
+		conn = get_connection()
+		cur  = conn.cursor()
+		cur.execute("SELECT id, film_name, duration FROM films")
+		rows = cur.fetchall()
+		conn.close()
+		return rows
