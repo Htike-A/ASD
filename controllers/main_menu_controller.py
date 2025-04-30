@@ -43,13 +43,18 @@ class MainMenuController:
 
 	def log_out(self):
 		self.view.withdraw()
+		self.app.data.clear()
 		self.app.show_frame("LoginController")
 
-	def go_back():
-		pass
-
-	def go_next():
-		pass
-	
+	def go_back(self):
+		role = self.app.data["UserRole"]
+		if role == "Booking Staff":
+			self.app.show_frame("StaffController")
+		elif role == "Admin":
+			self.app.show_frame("AdminController")
+		elif role == "Manager":
+			self.app.show_frame("ManagerController")
+		else:
+			print("error")
 	
 	

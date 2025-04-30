@@ -9,6 +9,8 @@ class MainMenuView(tk.Toplevel):
 		self.geometry("1000x700")
 		self.data = data
 		user = self.data["UserName"]
+
+		self.protocol("WM_DELETE_WINDOW", self.go_back)
   
 		container = tk.Frame(self)
 		container.pack(fill="x", padx=10, pady=5)
@@ -17,6 +19,9 @@ class MainMenuView(tk.Toplevel):
 		self.label.pack(side="left")
 
 		button = tk.Button(container, text="Logout", command=self.log_out)
+		button.pack(side="right")
+
+		button = tk.Button(container, text="Go back", command=self.go_back)
 		button.pack(side="right")
 
 		self.selected_city = tk.StringVar(value="Bristol")
@@ -107,13 +112,13 @@ class MainMenuView(tk.Toplevel):
 	def select_day(self, date):
 		print(date)
 		if self.selected_button:
-			self.selected_button.config(fg="black")  # default color
+			self.selected_button.config(fg="black") 
 
-        # Highlight the newly selected button
+
 		btn = self.buttons[date]
-		btn.config(fg="lightblue")  # or any color you prefer
+		btn.config(fg="lightblue")  
 
-		self.selected_button = btn  # update current selection
+		self.selected_button = btn  
 		self.selected_date.set(date)
 		self.update_movie_list()
 
@@ -187,6 +192,10 @@ class MainMenuView(tk.Toplevel):
   
 	def log_out(self):
 		self.controller.log_out()
+
+	def go_back(self):
+		self.controller.go_back()
+		self.destroy()
 
 
 

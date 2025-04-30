@@ -27,10 +27,11 @@ class LoginController:
         if not user:
             self.view.error_lbl.config(text="Invalid credentials")
             return
-        self.app.update_data(UserID=user["userId"], UserName=user["userName"])
+        
         self.view.error_lbl.config(text="")
         self.hide()
         role = user["userRole"]
+        self.app.update_data(UserID=user["userId"], UserName=user["userName"], UserRole=role)
         if role == "Booking Staff":
             self.app.show_frame("StaffController")
         elif role == "Admin":

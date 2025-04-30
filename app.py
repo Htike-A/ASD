@@ -14,6 +14,7 @@ class AppManager:
 		self.data = {
 			"UserID": None,
 			"UserName": None,
+			"UserRole": None,
 			"Movie": [],
 			"Seats" : [],
 			"ShowID": None,
