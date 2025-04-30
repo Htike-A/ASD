@@ -9,6 +9,7 @@ class AdminView(StaffView):
         frm = tk.Frame(self)
         frm.pack(pady=20)
         tk.Button(frm, text="Add Film",           command=self.open_add_film_form).pack(side="left", padx=5)
+        tk.Button(frm, text="Add Show",    command=self.open_add_show_form).pack(side="left", padx=5)
         tk.Button(frm, text="Update Showtime",    command=self.open_update_show_form).pack(side="left", padx=5)
         tk.Button(frm, text="Remove Film",        command=self.open_remove_film_form).pack(side="left", padx=5)
         tk.Button(frm, text="Admin Report",       command=self.open_report).pack(side="left", padx=5)
@@ -57,6 +58,41 @@ class AdminView(StaffView):
         tk.Button(btns, text="Save",   command=on_save).pack(side="left", padx=5)
         tk.Button(btns, text="Cancel", command=dlg.destroy).pack(side="left", padx=5)
 
+    def open_add_show_form(self):
+        dlg = tk.Toplevel(self)
+        dlg.title("Update Showtime")
+        dlg.transient(self); dlg.grab_set()
+
+        fields = [
+            ("Screen ID:", "scid",      tk.IntVar),
+            ("Film ID:", "fid",      tk.IntVar),
+            ("New Time (HH:MM):",      "time", tk.StringVar),
+            ("New Date (Weekday DD/MM ):", "date", tk.StringVar),
+            ("New Price:",             "price",tk.DoubleVar),
+        ]
+        vars = {}
+        for i, (lbl, key, V) in enumerate(fields):
+            tk.Label(dlg, text=lbl).grid(row=i, column=0, sticky="e", pady=2, padx=4)
+            var = V()
+            tk.Entry(dlg, textvariable=var).grid(row=i, column=1, pady=2, padx=4)
+            vars[key] = var
+
+        btns = tk.Frame(dlg)
+        btns.grid(row=len(fields), column=0, columnspan=2, pady=(10,0))
+        def on_update():
+            scid   = vars["scid"].get()
+            fid   = vars["fid"].get()
+            date  = vars["date"].get().strip()
+            time  = vars["time"].get().strip()
+            price = vars["price"].get()
+            if scid and fid and date and time and price is not None:
+                self.ctrl.add_show(scid, fid, date, time, price)
+                dlg.destroy()
+            else:
+                tk.messagebox.showerror("Error", "Please fill in all fields")
+        tk.Button(btns, text="Save",   command=on_update).pack(side="left", padx=5)
+        tk.Button(btns, text="Cancel", command=dlg.destroy).pack(side="left", padx=5)
+
     def open_update_show_form(self):
         dlg = tk.Toplevel(self)
         dlg.title("Update Showtime")
@@ -64,8 +100,10 @@ class AdminView(StaffView):
 
         fields = [
             ("Show ID:", "sid",      tk.IntVar),
-            ("New Date (YYYY-MM-DD):", "date", tk.StringVar),
+            ("Screen ID:", "scid",      tk.IntVar),
+            ("Film ID:", "fid",      tk.IntVar),
             ("New Time (HH:MM):",      "time", tk.StringVar),
+            ("New Date (Weekday DD/MM ):", "date", tk.StringVar),
             ("New Price:",             "price",tk.DoubleVar),
         ]
         vars = {}
@@ -79,11 +117,13 @@ class AdminView(StaffView):
         btns.grid(row=len(fields), column=0, columnspan=2, pady=(10,0))
         def on_update():
             sid   = vars["sid"].get()
+            scid   = vars["scid"].get()
+            fid   = vars["fid"].get()
             date  = vars["date"].get().strip()
             time  = vars["time"].get().strip()
             price = vars["price"].get()
-            if sid and date and time and price is not None:
-                self.ctrl.update_showtime(sid, date, time, price)
+            if sid and scid and fid and date and time and price is not None:
+                self.ctrl.update_showtime(sid, scid, fid, date, time, price)
                 dlg.destroy()
             else:
                 tk.messagebox.showerror("Error", "Please fill in all fields")

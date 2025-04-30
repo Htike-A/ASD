@@ -105,7 +105,7 @@ class MainMenuView(tk.Toplevel):
 		canvas.bind_all("<Button-5>", on_mousewheel)
 
 	def select_day(self, date):
-
+		print(date)
 		if self.selected_button:
 			self.selected_button.config(fg="black")  # default color
 
