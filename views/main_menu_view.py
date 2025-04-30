@@ -20,7 +20,10 @@ class MainMenuView(tk.Toplevel):
 		button.pack(side="right")
 
 		self.selected_city = tk.StringVar(value="Bristol")
-		self.selected_day = tk.StringVar(value="Monday")
+		self.selected_date = tk.StringVar(value="Mon 05/05")
+		
+		self.selected_button = None
+		self.buttons = {}
 
 		self.create_dropdown()
 		self.create_day_buttons(14)
@@ -58,14 +61,14 @@ class MainMenuView(tk.Toplevel):
 		for i in range(num_days):
 			current_date = today + datetime.timedelta(days=i)
 			day_str = current_date.strftime("%a %d/%m") #Mon 01/04
-			weekday_str = current_date.strftime("%A")
 			btn = tk.Button(
 				days_frame,
 				text=day_str,
-				command=lambda d=weekday_str: self.select_day(d),
-				width=10
+				command=lambda d=day_str: self.select_day(d),
+				width=10,
 			)
 			btn.pack(side="left", padx=2)
+			self.buttons[day_str] = btn
 
 		def update_scroll_region(event=None):
 			canvas.configure(scrollregion=canvas.bbox("all"))
@@ -101,11 +104,17 @@ class MainMenuView(tk.Toplevel):
 		canvas.bind_all("<Button-4>", on_mousewheel)
 		canvas.bind_all("<Button-5>", on_mousewheel)
 
-		
+	def select_day(self, date):
 
-	def select_day(self, day):
-		print(day)
-		self.selected_day.set(day)
+		if self.selected_button:
+			self.selected_button.config(fg="black")  # default color
+
+        # Highlight the newly selected button
+		btn = self.buttons[date]
+		btn.config(fg="lightblue")  # or any color you prefer
+
+		self.selected_button = btn  # update current selection
+		self.selected_date.set(date)
 		self.update_movie_list()
 
 	def create_movie_list_area(self):
@@ -142,8 +151,8 @@ class MainMenuView(tk.Toplevel):
 			widget.destroy()
 
 		city = self.selected_city.get()
-		day = self.selected_day.get()
-		movies = self.controller.get_movies(city, day)
+		date = self.selected_date.get()
+		movies = self.controller.get_movies(city, date)
 		
 		if not movies:
 			tk.Label(self.movie_frame, text=f"No movies for today.").pack()

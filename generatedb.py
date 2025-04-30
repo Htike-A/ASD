@@ -35,7 +35,7 @@ films = [
 ]
 
 show_times = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"]
-days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+days = ["Mon 05/05", "Tue 06/05", "Wed 07/05", "Thurs 08/05", "Fri 09/05", "Sat 10/05", "Sun 11/05"]
 
 # --- Insert Films ---
 cur.executemany("""

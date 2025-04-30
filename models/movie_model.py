@@ -11,7 +11,7 @@ class MovieModel:
 		return result
 	def close_conn(self):
 		self.conn.close()
-	def get_movies(self, loc, day):
+	def get_movies(self, loc, date):
 		self.conn = get_connection()
 		self.cur = self.conn.cursor()
 		query = """
@@ -37,7 +37,7 @@ class MovieModel:
 		WHERE c.city = ? AND s.show_date = ?
 		ORDER BY s.show_time;
 		"""
-		self.cur.execute(query, (loc, day))
+		self.cur.execute(query, (loc, date))
 		result = self.cur.fetchall()
 
 		return result

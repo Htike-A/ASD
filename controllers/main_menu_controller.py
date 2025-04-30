@@ -28,8 +28,8 @@ class MainMenuController:
 	def get_location(self):
 		return self.model.get_location()
 	
-	def get_movies(self, location, day):
-		return self.model.get_movies(location, day)
+	def get_movies(self, location, date):
+		return self.model.get_movies(location, date)
 
 	def get_seats(self, screen_id):
 		return self.model.get_seats(screen_id)
