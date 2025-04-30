@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import datetime
 
 class MainMenuView(tk.Toplevel):
 	def __init__(self, master, controller, data):
@@ -10,7 +11,7 @@ class MainMenuView(tk.Toplevel):
 		user = self.data["UserName"]
   
 		container = tk.Frame(self)
-		container.pack(fill="x", padx=10, pady=10)
+		container.pack(fill="x", padx=10, pady=5)
 
 		self.label = tk.Label(container, text=f"Welcome, {user}")
 		self.label.pack(side="left")
@@ -22,7 +23,7 @@ class MainMenuView(tk.Toplevel):
 		self.selected_day = tk.StringVar(value="Monday")
 
 		self.create_dropdown()
-		self.create_day_buttons()
+		self.create_day_buttons(14)
 		self.create_movie_list_area()
 		self.update_movie_list()
   
@@ -36,19 +37,74 @@ class MainMenuView(tk.Toplevel):
 		city_options.pack(side="left")
 		city_options.bind("<<ComboboxSelected>>", lambda e: self.update_movie_list())
 
-	def create_day_buttons(self):
-		days_frame = tk.Frame(self)
-		days_frame.pack(side="top", fill="x", pady=10)
+	def create_day_buttons(self, num_days):
+		container = tk.Frame(self)
+		container.pack(fill="x", expand=False, padx=5, pady=5)
 
-		for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]:
+		canvas = tk.Canvas(container, height=25)
+		scrollbar = ttk.Scrollbar(container, orient="horizontal", command=canvas.xview)
+		canvas.configure(xscrollcommand=scrollbar.set)
+
+		canvas.grid(row=0, column=0, sticky="ew") 
+		scrollbar.grid(row=1, column=0, sticky="ew")
+		container.columnconfigure(0, weight=1)
+
+		days_frame = tk.Frame(canvas)
+		canvas_window = canvas.create_window((0, 0), window=days_frame, anchor="nw")
+
+
+		today = datetime.datetime.now()
+
+		for i in range(num_days):
+			current_date = today + datetime.timedelta(days=i)
+			day_str = current_date.strftime("%a %d/%m") #Mon 01/04
+			weekday_str = current_date.strftime("%A")
 			btn = tk.Button(
 				days_frame,
-				text=day[:3],
-				command=lambda d=day: self.select_day(d),
-				width=6
+				text=day_str,
+				command=lambda d=weekday_str: self.select_day(d),
+				width=10
 			)
 			btn.pack(side="left", padx=2)
+
+		def update_scroll_region(event=None):
+			canvas.configure(scrollregion=canvas.bbox("all"))
+
+		def on_canvas_configure(event):
+			canvas_width = event.width
+			canvas.itemconfig(canvas_window, width=canvas_width)
+
+		def on_mousewheel(event):
+        # Handle mouse wheel scrolling
+			try:
+				if hasattr(event, 'num') and event.num == 4 or hasattr(event, 'delta') and event.delta > 0:
+					canvas.xview_scroll(-1, "units")
+				elif hasattr(event, 'num') and event.num == 5 or hasattr(event, 'delta') and event.delta < 0:
+					canvas.xview_scroll(1, "units")
+				else:
+					canvas.xview_scroll(int(-1*(event.delta/120)), "units")
+			except:
+			    # Fallback for platforms with different event structure
+				if hasattr(event, 'delta') and event.delta > 0:
+					canvas.xview_scroll(-1, "units")
+				else:
+					canvas.xview_scroll(1, "units")
+
+		self.update_idletasks()
+		update_scroll_region()
+
+		days_frame.bind("<Configure>", update_scroll_region)
+		canvas.bind("<Configure>", on_canvas_configure)
+        
+        # Enable mouse wheel scrolling
+		canvas.bind_all("<MouseWheel>", on_mousewheel)
+		canvas.bind_all("<Button-4>", on_mousewheel)
+		canvas.bind_all("<Button-5>", on_mousewheel)
+
+		
+
 	def select_day(self, day):
+		print(day)
 		self.selected_day.set(day)
 		self.update_movie_list()
 

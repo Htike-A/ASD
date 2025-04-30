@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS shows (
     screen_id INTEGER,
     film_id INTEGER,
     show_time TEXT, 
-    show_date TEXT, 
+    show_date TEXT, -- "Mon 04/05"
     price REAL,
     FOREIGN KEY (screen_id) REFERENCES screens(id),
     FOREIGN KEY (film_id) REFERENCES films(id)
