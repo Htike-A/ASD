@@ -98,7 +98,8 @@ class BookingsView(tk.Toplevel):
             if column == "#9":
                 item = self.tree.item(row_id)
                 booking_id = item["values"][0]
-                self.cancel_booking(booking_id)
+                CancelSeatsPopup(self, booking_id, refresh_callback=self.load_bookings)
+                #self.cancel_booking(booking_id)
 
     def cancel_booking(self, booking_id):
         CancelSeatsPopup(self, booking_id, self.load_bookings)

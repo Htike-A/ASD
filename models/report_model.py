@@ -83,7 +83,8 @@ class ReportModel:
                    COUNT(*)                               AS bookings
               FROM bookings b
               JOIN users u    ON b.user_id = u.id
-             WHERE u.user_role = 'Booking Staff'
+             WHERE u.user_role IN ('Booking Staff', 'Admin', 'Manager')
+
                AND b.booking_status = 'confirmed'
         """
         params = []
