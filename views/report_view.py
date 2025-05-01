@@ -11,13 +11,13 @@ class ReportView(tk.Toplevel):
         self.controller   = controller
         self.model        = controller.report_model
 
-        self.choice = tk.StringVar()
         opts = [
             "Bookings per Listing",
             "Monthly Revenue per Cinema",
             "Top Revenue Films",
             "Staff Monthly Booking Counts",
         ]
+        self.choice = tk.StringVar(value="Bookings per Listing")
         ttk.Combobox(self, values=opts, textvariable=self.choice, state="readonly")\
            .pack(padx=10, pady=(10,0))
         tk.Button(self, text="Run", command=self.run_report).pack(padx=10, pady=5)

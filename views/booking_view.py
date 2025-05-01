@@ -108,4 +108,12 @@ class BookingsView(tk.Toplevel):
 
     def go_back(self):
         self.destroy()
-        self.controller.app.show_frame("StaffController")
+        role = self.app.data["UserRole"]
+        if role == "Booking Staff":
+            self.app.show_frame("StaffController")
+        elif role == "Admin":
+            self.app.show_frame("AdminController")
+        elif role == "Manager":
+            self.app.show_frame("ManagerController")
+        else:
+            print("error")

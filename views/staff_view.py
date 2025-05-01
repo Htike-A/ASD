@@ -19,7 +19,6 @@ class StaffView(tk.Frame):
         tk.Button(frm, text="View Listings", width=20, command=self.ctrl.view_listings).pack(pady=5)
         tk.Button(frm, text="Bookings",width=20, command=self.ctrl.open_bookings_view).pack(pady=5)
         tk.Button(frm, text="Refund History", width=20, command=self.ctrl.open_refund_history).pack(pady=5)
-        tk.Button(frm, text="Cancel Booking",width=20, command=self.open_cancel_dialog).pack(pady=5)
 
         self.status_lbl = tk.Label(self, text="", font=("Arial", 12))
         self.status_lbl.pack(pady=20)
