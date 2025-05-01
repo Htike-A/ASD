@@ -34,7 +34,6 @@ class LoginController:
         self.hide()
         role = user["userRole"]
         self.app.update_data(UserID=user["userId"], UserName=user["userName"], UserRole=role)
-        print(self.app.data)
         if role == "Booking Staff":
             self.app.show_frame("StaffController")
         elif role == "Admin":
