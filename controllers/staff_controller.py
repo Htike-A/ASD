@@ -14,7 +14,7 @@ class StaffController:
         self.view    = StaffView(master, self)
 
     def show(self):
-        self.view.welcome_lbl.config(text=f"Welcome, {self.app.data["UserName"]}")
+        self.view.welcome_lbl.config(text=f"Welcome, {self.data['UserName']}")
         self.view.pack(fill="both", expand=True)
 
     def hide(self):
