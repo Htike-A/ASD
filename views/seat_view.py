@@ -1,4 +1,6 @@
-#author - Htike Hla Aung
+#StudentName-Htike Hla Aung
+#StduentID-23056129
+
 import tkinter as tk
 from tkinter import messagebox
 

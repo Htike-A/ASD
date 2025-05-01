@@ -1,7 +1,9 @@
-#author - Htike Hla Aung
+#StudentName-Htike Hla Aung
+#StduentID-23056129
+
 
 from views.payment_view import PaymentView
-from models.paymente_model import PaymentModel
+from models.payment_model import PaymentModel
 from reportlab.pdfgen import canvas
 import os
 

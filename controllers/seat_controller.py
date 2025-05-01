@@ -1,4 +1,5 @@
-#author - Htike Hla Aung
+#StudentName-Htike Hla Aung
+#StduentID-23056129
 
 from models.movie_model import MovieModel
 from views.seat_view import SeatView

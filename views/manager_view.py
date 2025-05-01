@@ -1,4 +1,7 @@
-#author - Hein Zarni Naing
+#StudentName-Htike Hla Aung
+#StduentID-23056129
+#StudentName-Hein Zarni Naing
+#StudentID-23005535
 
 # views/manager_view.py
 import tkinter as tk

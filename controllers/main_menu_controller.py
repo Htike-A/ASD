@@ -1,4 +1,5 @@
-#author - Htike Hla Aung
+#StudentName-Htike Hla Aung
+#StduentID-23056129
 
 from views.main_menu_view import MainMenuView
 from models.movie_model import MovieModel

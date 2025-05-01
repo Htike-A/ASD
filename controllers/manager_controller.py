@@ -1,4 +1,7 @@
-#author - Hein Zarni Naing
+#StudentName-Hein Zarni Naing
+#StudentID-23005535
+#StudentName-Htike Hla Aung
+#StduentID-23056129
 
 # controllers/manager_controller.py
 from controllers.admin_controller import AdminController

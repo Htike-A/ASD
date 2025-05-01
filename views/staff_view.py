@@ -1,4 +1,5 @@
-#author - Hein Zarni Naing
+#StudentName-Hein Zarni Naing
+#StudentID-23005535
 
 import tkinter as tk
 from tkinter import simpledialog

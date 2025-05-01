@@ -1,4 +1,5 @@
-#author - Htike Hla Aung
+#StudentName-Htike Hla Aung
+#StduentID-23056129
 
 # models/showtime_model.py
 from models.database import get_connection
