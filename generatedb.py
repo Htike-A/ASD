@@ -2,9 +2,41 @@ import sqlite3
 import random
 import math
 import hashlib
+from datetime import date, timedelta
+
 
 def hash_pw(pw: str) -> str:
     return hashlib.sha256(pw.encode()).hexdigest()
+
+def get_time_slot(hhmm: str) -> str:
+    """
+    Bucket a time like '3:00 PM' correctly into morning/afternoon/evening
+    by parsing the AM/PM suffix.
+    """
+    # Split into the clock part and the suffix
+    time_part, suffix = hhmm.split()        # e.g. ("3:00", "PM")
+    hour_str, _ = time_part.split(":")      # e.g. "3"
+    h = int(hour_str)
+
+    # Convert to 24h
+    suffix = suffix.upper()
+    if suffix == "PM" and h != 12:
+        h += 12
+    if suffix == "AM" and h == 12:
+        h = 0
+
+    # Now bucket
+    if 8 <= h < 12:
+        return "morning"
+    if 12 <= h < 17:
+        return "afternoon"
+    return "evening"
+PRICE_TABLE = {
+    "Bristol":    {"morning": 6,  "afternoon": 7,  "evening": 8},
+    "Birmingham": {"morning": 5,  "afternoon": 6,  "evening": 7},
+    "Cardiff":    {"morning": 5,  "afternoon": 6,  "evening": 7},
+    "London":     {"morning":10,  "afternoon":11,  "evening":12},
+}
 
 
 # Connect to the database
@@ -12,9 +44,9 @@ conn = sqlite3.connect("movies.db")
 cur = conn.cursor()
 
 users = [
-    ("Alice" ,"Staff",  "alice.staff@example.com",  hash_pw("password123"), "Booking Staff"),
-    ("Bob" , "Admin",    "bob.admin@example.com",    hash_pw("adminpass"),   "Admin"),
-    ("Hein", "Zarni Naing","heinzarninn@gmail.com",    hash_pw("managerpass"),"Manager")
+    ("Staff" ,"Staff",  "staff@example.com",  hash_pw("staff123"), "Booking Staff"),
+    ("Admin" , "Admin",    "admin@example.com",    hash_pw("admin123"),   "Admin"),
+    ("Manager", "Manager","manager@gmail.com",    hash_pw("manager123"),"Manager")
 ]
 
 cur.executemany("""
@@ -22,6 +54,15 @@ INSERT OR IGNORE INTO users
   (user_FirstName,user_LastName, user_email, user_password, user_role) 
 VALUES (?, ?, ?, ?, ?)
 """, users)
+
+
+PW = hash_pw("123")
+
+cur.execute("""
+INSERT INTO users 
+  (user_FirstName,user_LastName, user_email, user_password, user_role) 
+VALUES (?, ?, ?, ?, ?)
+""", ('asdf', 'asdf', 'asdf', PW, 'Manager'))
 
 
 # --- Data ---
@@ -35,21 +76,15 @@ films = [
 ]
 
 show_times = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"]
-days = ["Mon 05/05", "Tue 06/05", "Wed 07/05", "Thu 08/05", "Fri 09/05", "Sat 10/05", "Sun 11/05"]
+
+
+days = ["Thu 01/05", "Fri 02/05", "Sat 03/05", "Sun 04/05", "Mon 05/05", "Tue 06/05", "Wed 07/05", "Thu 08/05", "Fri 09/05", "Sat 10/05", "Sun 11/05" , "Mon 12/05", "Tue 13/05", "Wed 14/05", "Thu 15/05", "Fri 16/05", "Sat 17/05", "Sun 18/05"]
 
 # --- Insert Films ---
 cur.executemany("""
 INSERT INTO films (film_name, film_disc, film_age, film_rating, film_cast, duration)
 VALUES (?, ?, ?, ?, ?, ?)
 """, films)
-
-PW = hash_pw("123")
-
-cur.execute("""
-INSERT INTO users 
-  (user_FirstName,user_LastName, user_email, user_password, user_role) 
-VALUES (?, ?, ?, ?, ?)
-""", ('asdf', 'asdf', 'asdf', PW, 'Manager'))
 
 # --- Insert Cinemas & Screens ---
 cinema_ids = []
@@ -66,27 +101,30 @@ for city in cities:
         cur.execute("INSERT INTO screens (cinema_id, screen_name, capacity) VALUES (?, ?, ?)", (cinema_id, screen_name, capacity))
 
 # --- Insert Shows ---
-cur.execute("SELECT id, capacity FROM screens")
-screen_ids = [row[0:2] for row in cur.fetchall()]
+cur.execute("""
+SELECT s.id, s.capacity, c.city
+  FROM screens s
+  JOIN cinemas c ON s.cinema_id = c.id
+""")
 
+screens = cur.fetchall()
 cur.execute("SELECT id FROM films")
 film_ids = [row[0] for row in cur.fetchall()]
 
 
-show_id_counter = 1
-for screen_id in screen_ids:
-    num_shows = random.randint(1, 3)
-    selected_times = random.sample(show_times, num_shows)
-    for time in selected_times:
-        film_id = random.choice(film_ids)
-        day = random.choice(days)
-        price = random.choice([6.0, 7.5, 9.0])
+for screen_id, capacity, city in screens:
+    for _ in range(random.randint(1, 3)):      
+        show_time = random.choice(show_times)
+        show_date = random.choice(days)
+        film_id   = random.choice(film_ids)
+
+        slot  = get_time_slot(show_time)
+        price = PRICE_TABLE[city][slot]        
         cur.execute("""
             INSERT INTO shows (screen_id, film_id, show_time, show_date, price)
             VALUES (?, ?, ?, ?, ?)
-        """, (screen_id[0], film_id, time, day, price))
+        """, (screen_id, film_id, show_time, show_date, price))
         show_id = cur.lastrowid
-        capacity = screen_id[1]
 
         vip_cap = 10
 
@@ -98,11 +136,10 @@ for screen_id in screen_ids:
         upper_seats = [f"UG{n}" for n in range(1, upper_hall_cap + 1)]
         vip_seats = [f"VIP{n}" for n in range(1, vip_cap + 1)]
 
-        s_id = screen_id[0]
 
-        all_seats = [(s_id, seat, "Lower Hall") for seat in lower_seats] + \
-            [(s_id, seat, "Upper Gallery") for seat in upper_seats] + \
-            [(s_id, seat, "VIP") for seat in vip_seats]
+        all_seats = [(show_id, seat, "Lower Hall") for seat in lower_seats] + \
+            [(show_id, seat, "Upper Gallery") for seat in upper_seats] + \
+            [(show_id, seat, "VIP") for seat in vip_seats]
         
         cur.executemany("""
     INSERT OR IGNORE INTO seats (screen_id, seat_code, section)
