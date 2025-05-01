@@ -1,6 +1,4 @@
-#StudentName-Hein Zarni Naing
-#StudentID-23005535
-
+#author - Hein Zarni Naing
 
 # controllers/staff_controller.py
 import tkinter as tk
@@ -12,11 +10,11 @@ class StaffController:
     def __init__(self, master, app_manager, data):
         self.master = master
         self.app     = app_manager
-        self.data    = self.app.data 
+        self.data    = data 
         self.view    = StaffView(master, self)
 
     def show(self):
-        self.view.welcome_lbl.config(text=f"Welcome, {self.data["UserName"]}")
+        self.view.welcome_lbl.config(text=f"Welcome, {self.app.data["UserName"]}")
         self.view.pack(fill="both", expand=True)
 
     def hide(self):
