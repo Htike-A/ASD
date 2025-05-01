@@ -1,3 +1,5 @@
+#author - Htike Hla Aung
+
 import tkinter as tk
 from tkinter import ttk
 import datetime

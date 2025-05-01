@@ -1,3 +1,5 @@
+#author - Hein Zarni Naing
+
 # models/auth_model.py
 import sqlite3
 import hashlib

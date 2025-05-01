@@ -1,3 +1,5 @@
+#author - Hein Zarni Naing
+
 import math, random
 from models.database import get_connection
 

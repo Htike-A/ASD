@@ -1,3 +1,5 @@
+#author - Hein Zarni Naing
+
 import tkinter as tk
 from tkinter import simpledialog
 

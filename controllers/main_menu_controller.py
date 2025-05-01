@@ -1,3 +1,5 @@
+#author - Htike Hla Aung
+
 from views.main_menu_view import MainMenuView
 from models.movie_model import MovieModel
 from views.seat_view import SeatView
@@ -43,7 +45,7 @@ class MainMenuController:
 
 	def log_out(self):
 		self.view.withdraw()
-		self.app.data.clear()
+		self.app.data = {key: None for key  in self.app.data}
 		self.app.show_frame("LoginController")
 
 	def go_back(self):
@@ -56,5 +58,6 @@ class MainMenuController:
 			self.app.show_frame("ManagerController")
 		else:
 			print("error")
+
 	
 	

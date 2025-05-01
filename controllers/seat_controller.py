@@ -1,3 +1,5 @@
+#author - Htike Hla Aung
+
 from models.movie_model import MovieModel
 from views.seat_view import SeatView
 

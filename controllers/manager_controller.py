@@ -1,3 +1,5 @@
+#author - Hein Zarni Naing
+
 # controllers/manager_controller.py
 from controllers.admin_controller import AdminController
 from views.manager_view import ManagerView
@@ -34,6 +36,10 @@ class ManagerController(AdminController):
         returns list of (id, firstName, lastName, email, role)
         """
         return self.user_model.list_users()
+    
+    def add_user(self, data):
+        self.user_model.create_user(**data)
+        self.view.status_lbl.config(text="User added.", fg="green")
 
     def remove_user(self, email, role):
         """

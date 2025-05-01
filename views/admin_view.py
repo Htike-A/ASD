@@ -1,3 +1,5 @@
+#author - Hein Zarni Naing
+
 import tkinter as tk
 from views.staff_view import StaffView
 

@@ -1,3 +1,5 @@
+#author - Hein Zarni Naing
+
 # controllers/admin_controller.py
 from controllers.staff_controller import StaffController
 from views.admin_view        import AdminView
@@ -25,11 +27,11 @@ class AdminController(StaffController):
         self.film_model.delete_film(film_name, duration)
         self.view.status_lbl.config(text="Film removed.", fg="green")
 
-    def add_show(self, screen_id, film_id, date, time, price):
+    def add_show(self, screen_id, film_id, date, time, price): # #author - Htike Hla Aung
         self.showtime_model.add_show(screen_id, film_id, date, time, price)
         self.view.status_lbl.config(text="Showtime updated.", fg="green")
 
-    def update_showtime(self, show_id, screen_id, film_id, date, time, price):
+    def update_showtime(self, show_id, screen_id, film_id, date, time, price): #author - Htike Hla Aung
         self.showtime_model.update_showtime(show_id, film_id, screen_id, date, time, price)
         self.view.status_lbl.config(text="Showtime updated.", fg="green")
 
