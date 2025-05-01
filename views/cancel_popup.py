@@ -6,18 +6,19 @@ from tkinter import messagebox
 import sqlite3
 from datetime import datetime, date
 
-class CancelSeatsPopup(tk.Toplevel):
+class CancelPopup(tk.Toplevel):
     def __init__(self, master, booking_id, refresh_callback=None):
         super().__init__(master)
+        self.geometry("300x100")
         self.title("Cancel Seats")
         self.booking_id = booking_id
         self.refresh_callback = refresh_callback
         self.selected_seats = []
 
         self.checkbuttons = {}
-        self.load_seats()
+        self.load_booking()
 
-    def load_seats(self):
+    def load_booking(self):
         conn = sqlite3.connect("movies.db")
         cur = conn.cursor()
 
@@ -28,24 +29,19 @@ class CancelSeatsPopup(tk.Toplevel):
             WHERE bs.booking_id = ?
         """
         cur.execute(query, (self.booking_id,))
-        seats = cur.fetchall()
+        self.seats = cur.fetchall()
+        if self.seats == None:
+            messagebox.showerror("Error", "No seat booked", parent=self)
+
+        print(self.seats)
         conn.close()
 
-        for i, (seat_id, seat_code) in enumerate(seats):
-            var = tk.IntVar()
-            chk = tk.Checkbutton(self, text=seat_code, variable=var)
-            chk.grid(row=i, column=0, sticky="w", padx=10, pady=2)
-            self.checkbuttons[seat_id] = var
 
         confirm_btn = tk.Button(self, text="Confirm Cancellation", command=self.confirm_cancellation)
-        confirm_btn.grid(row=len(seats), column=0, pady=10)
+        confirm_btn.pack()
 
     def confirm_cancellation(self):
-        selected_ids = [sid for sid, var in self.checkbuttons.items() if var.get() == 1]
-        if not selected_ids:
-            messagebox.showwarning("No Selection", "Please select at least one seat to cancel.", parent=self)
-            return
-
+        selected_ids = self.seats
         conn = sqlite3.connect("movies.db")
         cur = conn.cursor()
         cur.execute("PRAGMA foreign_keys = ON")
@@ -84,15 +80,15 @@ class CancelSeatsPopup(tk.Toplevel):
         price_per_seat = total_cost / total_seats if total_seats else 0
 
         for sid in selected_ids:
-            cur.execute("DELETE FROM booking_seat WHERE booking_id = ? AND seat_id = ?", (self.booking_id, sid))
-
+            cur.execute("DELETE FROM booking_seat WHERE booking_id = ? AND seat_id = ?", (self.booking_id, sid[0]))
         cur.execute("SELECT COUNT(*) FROM booking_seat WHERE booking_id = ?", (self.booking_id,))
         remaining = cur.fetchone()[0]
+
 
         if remaining == 0:
             cur.execute("UPDATE bookings SET booking_status = 'cancelled' WHERE id = ?", (self.booking_id,))
 
-        refund_amount = price_per_seat * len(selected_ids) * 0.5
+        refund_amount = total_cost * 0.5
         cur.execute("INSERT INTO cancellation (cancellation_fee, booking_id) VALUES (?, ?)", (refund_amount, self.booking_id))
 
         conn.commit()

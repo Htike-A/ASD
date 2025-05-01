@@ -4,11 +4,12 @@
 import tkinter as tk
 from tkinter import ttk
 import sqlite3
-from views.cancel_seats_popup import CancelSeatsPopup
+from views.cancel_popup import CancelPopup
 
 class BookingsView(tk.Toplevel):
-    def __init__(self, master, controller):
+    def __init__(self, master, app, controller):
         super().__init__(master)
+        self.app = app
         self.title("All Bookings")
         self.geometry("1000x600")
         self.controller = controller
@@ -101,11 +102,11 @@ class BookingsView(tk.Toplevel):
             if column == "#9":
                 item = self.tree.item(row_id)
                 booking_id = item["values"][0]
-                CancelSeatsPopup(self, booking_id, refresh_callback=self.load_bookings)
+                CancelPopup(self, booking_id, refresh_callback=self.load_bookings)
                 #self.cancel_booking(booking_id)
 
     def cancel_booking(self, booking_id):
-        CancelSeatsPopup(self, booking_id, self.load_bookings)
+        CancelPopup(self, booking_id, self.load_bookings)
 
     def go_back(self):
         self.destroy()

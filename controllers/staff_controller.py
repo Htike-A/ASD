@@ -31,7 +31,7 @@ class StaffController:
         self.view.status_lbl.config(text=msg, fg="green" if ok else "red")
     
     def open_bookings_view(self):
-        BookingsView(self.master,self)
+        BookingsView(self.master,self.app, self)
 
     def open_refund_history(self):
         RefundHistoryView(self.master)
