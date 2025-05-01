@@ -13,9 +13,9 @@ run `python main.py`
 
 
 ### User name and passwords for Login
-Staff - staff, staff123
-Admin - admin, admin123
-Manager - manager, manager123
+Staff - staff@gmail.com, staff123
+Admin - admin@gmail.com, admin123
+Manager - manager@gmail.com, manager123
 
 ### Installed Python Packages
 
