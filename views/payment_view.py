@@ -74,15 +74,26 @@ class PaymentView(tk.Toplevel):
         confirm_btn.grid(row=0, column=1, padx=5, pady=5)
 
     def confirm_payment(self):
-        name = self.name_entry.get()
-        email = self.email_entry.get()
+        name = self.name_entry.get().strip()
+        email = self.email_entry.get().strip()
         card = self.card_entry.get()
         last_four = card[-4:]
         cvc = self.cvc_entry.get()
         expiry = self.expiry_entry.get()
 
-        if not name or not email or not card:
+        if not name or not email or not card or not cvc or not expiry:
             messagebox.showerror("Missing Info", "Please fill in all payment details.", parent=self)
+            return
+        
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            messagebox.showerror("Invalid Email", "Please enter a valid email address.", parent=self)
+            return
+
+        if len(card) != 16:
+            messagebox.showerror("Invalid Card", "Card number must be 16 digits.", parent=self)
+            return
+        if len(cvc) != 3:
+            messagebox.showerror("Invalid CVC", "CVC must be 3 digits.", parent=self)
             return
 
         if not self.validate_expiry_format(expiry):
