@@ -12,7 +12,7 @@ class StaffController:
     def __init__(self, master, app_manager, data):
         self.master = master
         self.app     = app_manager
-        self.data    = data 
+        self.data    = self.app.data 
         self.view    = StaffView(master, self)
 
     def show(self):
