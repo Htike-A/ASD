@@ -1,5 +1,7 @@
 from views.payment_view import PaymentView
 from models.paymente_model import PaymentModel
+from reportlab.pdfgen import canvas
+import os
 
 class PaymentController():
 	def __init__(self, master, app, data):
@@ -41,3 +43,19 @@ class PaymentController():
 		self.app.destroy_window("MainMenuController")
 		self.app.destroy_window("SeatController")
 		self.app.show_frame("MainMenuController")
+
+	def save_pdf(self, filename, text):
+		receipts_dir = os.path.join(os.getcwd(), "receipts")
+		os.makedirs(receipts_dir, exist_ok=True)
+
+		file = os.path.join(receipts_dir, filename)
+
+		c = canvas.Canvas(file)
+		width, height = c._pagesize
+		y = height - 50
+
+		for line in text.split('\n'):
+			c.drawString(50, y, line)
+			y -= 20  # spacing between lines
+
+		c.save()

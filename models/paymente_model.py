@@ -34,7 +34,32 @@ class PaymentModel:
 		cur = conn.cursor()
 		cur.execute(
 			"""
-			SELECT * from bookings where id = ?
+			SELECT 
+				b.booking_ref,
+				f.film_name,
+				s.show_date,
+				s.show_time,
+				sc.screen_name,
+				COUNT(bs.seat_id),
+				GROUP_CONCAT(se.seat_code, ', '),
+				b.total_cost,
+				b.booking_DateTime
+			FROM 
+				bookings b
+			JOIN 
+				shows s ON b.show_id = s.id
+			JOIN 
+				films f ON s.film_id = f.id
+			JOIN 
+				screens sc ON s.screen_id = sc.id
+			JOIN 
+				booking_seat bs ON b.id = bs.booking_id
+			JOIN 
+				seats se ON bs.seat_id = se.id
+			WHERE 
+				b.id = ?
+			GROUP BY 
+				b.id;
 			""", (booking_id,))
 		details = cur.fetchone()
 

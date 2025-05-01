@@ -94,14 +94,30 @@ class PaymentView(tk.Toplevel):
         
     def show_receipt(self):
         details = self.controller.get_receipt()
-        booking_ref = details[1]
-        name = details[2]
-        total_cost = details[5]
-        seats = self.data["Selected_Seats"]
-        messagebox.showinfo("Payment Success", 
-            f"Booking Confirmed!\nRef: {booking_ref}\nCustomer Name: {name}\nSeats: {', '.join(self.selected_seats)}\nTotal: £{total_cost:.2f}")
+        booking_ref = details[0]
+        film_name = details[1]
+        show_date = details[2]
+        show_time = details[3]
+        screen = details[4]
+        num_of_tickets = details[5]
+        total_cost = details[7]
+        booking_date = details[8]
+
+        receipt_text = (
+        f"Booking Receipt!\n"
+        f"Ref: {booking_ref}\n"
+        f"Film Name: {film_name}\n"
+        f"Film Date: {show_date}\n"
+        f"Show time: {show_time}\n"
+        f"Screen: {screen}\n"
+        f"Number of tickets: {num_of_tickets}\n"
+        f"Seat numbers: {', '.join(self.selected_seats)}\n"
+        f"Total booking Cost: £{total_cost:.2f}\n"
+        f"Booking Date: {booking_date}"
+    )
+
+        messagebox.showinfo("Payment Success", receipt_text)
+        file_name = f"{booking_ref}.pdf"
+        self.controller.save_pdf(file_name, receipt_text)
         self.destroy()
         self.controller.redirect()
-        
-
-        
