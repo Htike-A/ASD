@@ -50,11 +50,11 @@ class MainMenuView(tk.Toplevel):
 		container.pack(fill="x", expand=False, padx=5, pady=5)
 
 		canvas = tk.Canvas(container, height=25)
-		scrollbar = ttk.Scrollbar(container, orient="horizontal", command=canvas.xview)
-		canvas.configure(xscrollcommand=scrollbar.set)
+		day_scrollbar = ttk.Scrollbar(container, orient="horizontal", command=canvas.xview)
+		canvas.configure(xscrollcommand=day_scrollbar.set)
 
 		canvas.grid(row=0, column=0, sticky="ew") 
-		scrollbar.grid(row=1, column=0, sticky="ew")
+		day_scrollbar.grid(row=1, column=0, sticky="ew")
 		container.columnconfigure(0, weight=1)
 
 		days_frame = tk.Frame(canvas)
@@ -114,7 +114,6 @@ class MainMenuView(tk.Toplevel):
 		if self.selected_button:
 			self.selected_button.config(fg="black") 
 
-
 		btn = self.buttons[date]
 		btn.config(fg="lightblue")  
 
@@ -124,31 +123,31 @@ class MainMenuView(tk.Toplevel):
 
 	def create_movie_list_area(self):
 		container = tk.Frame(self)
-		container.pack(pady=10, fill="both", expand=True)
+		container.pack(pady=15, fill="both", expand=True)
 
-		# Create canvas and scrollbar
-		canvas = tk.Canvas(container)
-		scrollbar = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
-		canvas.configure(yscrollcommand=scrollbar.set)
+		# Create canvas and movie_scrollbar
+		movie_canvas = tk.Canvas(container)
+		movie_scrollbar = ttk.Scrollbar(container, orient="vertical", command=movie_canvas.yview)
+		movie_canvas.configure(yscrollcommand=movie_scrollbar.set)
 
-		scrollbar.pack(side="right", fill="y")
-		canvas.pack(side="left", fill="both", expand=True)
+		movie_scrollbar.pack(side="right", fill="y")
+		movie_canvas.pack(side="left", fill="both", expand=True)
 
-		# Create a frame inside the canvas
-		self.movie_frame = tk.Frame(canvas)
-		canvas.create_window((0, 0), window=self.movie_frame, anchor="nw")
+		# Create a frame inside the movie_canvas
+		self.movie_frame = tk.Frame(movie_canvas)
+		movie_canvas.create_window((0, 0), window=self.movie_frame, anchor="nw")
 
 		# Update scrollregion when content changes
 		def on_configure(event):
-			canvas.configure(scrollregion=canvas.bbox("all"))
+			movie_canvas.configure(scrollregion=movie_canvas.bbox("all"))
 
 		self.movie_frame.bind("<Configure>", on_configure)
 
     # Scroll with mousewheel
 		def on_mousewheel(event):
-			canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+			movie_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 		
-		canvas.bind_all("<MouseWheel>", on_mousewheel)
+		movie_canvas.bind_all("<MouseWheel>", on_mousewheel)
 
 	def update_movie_list(self):
 		# Clear current area

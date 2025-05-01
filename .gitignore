@@ -1,4 +1,8 @@
 # Ignore Python cache files
 __pycache__/
 *.py[cod]
-*.db
+
+# Python distribution
+dist/
+build/
+*.egg-info/
