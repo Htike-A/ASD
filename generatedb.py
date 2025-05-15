@@ -20,9 +20,9 @@ def get_time_slot(hhmm: str) -> str:
 
     # Convert to 24h
     suffix = suffix.upper()
-    if suffix == "PM" and h != 12:
+    if suffix == " PM" and h != 12:
         h += 12
-    if suffix == "AM" and h == 12:
+    if suffix == " AM" and h == 12:
         h = 0
 
     # Now bucket
@@ -43,26 +43,7 @@ PRICE_TABLE = {
 conn = sqlite3.connect("movies.db")
 cur = conn.cursor()
 
-users = [
-    ("Staff" ,"Staff",  "staff@example.com",  hash_pw("staff123"), "Booking Staff"),
-    ("Admin" , "Admin",    "admin@example.com",    hash_pw("admin123"),   "Admin"),
-    ("Manager", "Manager","manager@gmail.com",    hash_pw("manager123"),"Manager")
-]
 
-cur.executemany("""
-INSERT OR IGNORE INTO users 
-  (user_FirstName,user_LastName, user_email, user_password, user_role) 
-VALUES (?, ?, ?, ?, ?)
-""", users)
-
-
-PW = hash_pw("123")
-
-cur.execute("""
-INSERT INTO users 
-  (user_FirstName,user_LastName, user_email, user_password, user_role) 
-VALUES (?, ?, ?, ?, ?)
-""", ('asdf', 'asdf', 'asdf', PW, 'Manager'))
 
 
 # --- Data ---
@@ -78,7 +59,7 @@ films = [
 show_times = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"]
 
 
-days = ["Thu 01/05", "Fri 02/05", "Sat 03/05", "Sun 04/05", "Mon 05/05", "Tue 06/05", "Wed 07/05", "Thu 08/05", "Fri 09/05", "Sat 10/05", "Sun 11/05" , "Mon 12/05", "Tue 13/05", "Wed 14/05", "Thu 15/05", "Fri 16/05", "Sat 17/05", "Sun 18/05"]
+days = ["Thu 15/05", "Fri 16/05", "Sat 17/05", "Sun 18/05", "Mon 19/05", "Tue 20/05", "Wed 21/05", "Thu 22/05", "Fri 23/05", "Sat 24/05", "Sun 25/05" , "Mon 12/05", "Tue 13/05", "Wed 14/05", "Thu 15/05", "Fri 16/05", "Sat 17/05", "Sun 18/05"]
 
 # --- Insert Films ---
 cur.executemany("""
@@ -89,16 +70,7 @@ VALUES (?, ?, ?, ?, ?, ?)
 # --- Insert Cinemas & Screens ---
 cinema_ids = []
 
-for city in cities:
-    cur.execute("INSERT INTO cinemas (cinema_name, city) VALUES (?, ?)", (city, city))
-    cinema_id = cur.lastrowid
-    cinema_ids.append(cinema_id)
 
-    num_screens = random.randint(4, 6)
-    for i in range(num_screens):
-        screen_name = f"{city[:2]}_Screen_{i+1}"
-        capacity = random.randint(60, 120)
-        cur.execute("INSERT INTO screens (cinema_id, screen_name, capacity) VALUES (?, ?, ?)", (cinema_id, screen_name, capacity))
 
 # --- Insert Shows ---
 cur.execute("""

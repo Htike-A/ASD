@@ -9,7 +9,7 @@ class MainMenuView(tk.Toplevel):
 	def __init__(self, master, controller, data):
 		super().__init__(master)
 		self.controller = controller
-		self.geometry("1000x700")
+		self.geometry("800x700")
 		self.data = data
 		user = self.data["UserName"]
 
@@ -28,13 +28,13 @@ class MainMenuView(tk.Toplevel):
 		button.pack(side="right")
 
 		self.selected_city = tk.StringVar(value="Bristol")
-		self.selected_date = tk.StringVar(value="Mon 05/05")
+		self.selected_date = tk.StringVar(value="Thu 15/05")
 		
 		self.selected_button = None
 		self.buttons = {}
 
 		self.create_dropdown()
-		self.create_day_buttons(14)
+		self.create_day_buttons(8)
 		self.create_movie_list_area()
 		self.update_movie_list()
   
@@ -75,6 +75,8 @@ class MainMenuView(tk.Toplevel):
 				command=lambda d=day_str: self.select_day(d),
 				width=10,
 			)
+			if day_str == self.selected_date:
+				btn.config(fg="lightblue")
 			btn.pack(side="left", padx=2)
 			self.buttons[day_str] = btn
 
@@ -113,7 +115,6 @@ class MainMenuView(tk.Toplevel):
 		canvas.bind_all("<Button-5>", on_mousewheel)
 
 	def select_day(self, date):
-		print(date)
 		if self.selected_button:
 			self.selected_button.config(fg="black") 
 
@@ -189,7 +190,6 @@ class MainMenuView(tk.Toplevel):
 			book_button.pack(anchor="w", pady=5)
 
 	def proceed_to_booking(self, movie):
-		print("Proceeding to book:", movie[0], "at", movie[6], "on", movie[7])
 		self.controller.show_seats(movie)
   
 	def log_out(self):
