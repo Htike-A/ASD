@@ -43,7 +43,26 @@ PRICE_TABLE = {
 conn = sqlite3.connect("movies.db")
 cur = conn.cursor()
 
+users = [
+    ("Staff" ,"Staff",  "staff@example.com",  hash_pw("staff123"), "Booking Staff"),
+    ("Admin" , "Admin",    "admin@example.com",    hash_pw("admin123"),   "Admin"),
+    ("Manager", "Manager","manager@gmail.com",    hash_pw("manager123"),"Manager")
+]
 
+cur.executemany("""
+INSERT OR IGNORE INTO users 
+  (user_FirstName,user_LastName, user_email, user_password, user_role) 
+VALUES (?, ?, ?, ?, ?)
+""", users)
+
+
+PW = hash_pw("123")
+
+cur.execute("""
+INSERT INTO users 
+  (user_FirstName,user_LastName, user_email, user_password, user_role) 
+VALUES (?, ?, ?, ?, ?)
+""", ('asdf', 'asdf', 'asdf', PW, 'Manager'))
 
 
 # --- Data ---
@@ -70,7 +89,16 @@ VALUES (?, ?, ?, ?, ?, ?)
 # --- Insert Cinemas & Screens ---
 cinema_ids = []
 
+for city in cities:
+    cur.execute("INSERT INTO cinemas (cinema_name, city) VALUES (?, ?)", (city, city))
+    cinema_id = cur.lastrowid
+    cinema_ids.append(cinema_id)
 
+    num_screens = random.randint(4, 6)
+    for i in range(num_screens):
+        screen_name = f"{city[:2]}_Screen_{i+1}"
+        capacity = random.randint(60, 120)
+        cur.execute("INSERT INTO screens (cinema_id, screen_name, capacity) VALUES (?, ?, ?)", (cinema_id, screen_name, capacity))
 
 # --- Insert Shows ---
 cur.execute("""
