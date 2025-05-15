@@ -75,8 +75,6 @@ class MainMenuView(tk.Toplevel):
 				command=lambda d=day_str: self.select_day(d),
 				width=10,
 			)
-			if day_str == self.selected_date:
-				btn.config(fg="lightblue")
 			btn.pack(side="left", padx=2)
 			self.buttons[day_str] = btn
 
